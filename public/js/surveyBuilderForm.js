@@ -2,10 +2,9 @@ $(function(){
     var button = $('#add-question')
     button.prop("disabled",true)
 
-    $('.question-adder #input-selector').change(function()
+    $('#input-selector').change(function()
     {
-        $('#question-options').remove()
-        if ($('#input-selector').val() !== 'text-input')
+        if ($('#input-selector').val() !== 'text-input' && $('#question-options').length < 1)
         {
             $('.question-adder').append(
                 '<div id="question-options" class="input-group">' +
@@ -29,15 +28,21 @@ $(function(){
                     $optionInput.val('')
                     $('.remove-option').click(function(){
                         $(this).parent('div').remove()
+                        validateNewQuestion($('#question').val(), button, $('#input-selector').val())
                     })
                 }
+
+                validateNewQuestion($('#question').val(), button, $('#input-selector').val())
             })
+        } else if($('#input-selector').val() == 'text-input') {
+            $('#question-options').remove()
         }
+        validateNewQuestion($('#question').val(), button, $('#input-selector').val())
     })
 
     $('#question').keyup(function(e)
     {
-        validateNewQuestion($('#question').val(), button)
+        validateNewQuestion($('#question').val(), button, $('#input-selector').val())
     })
 
     button.click(function(e)
@@ -91,17 +96,21 @@ $(function(){
  * @param STRING question text in question's text box
  * @param JQUERYSELECTOR button to be enabled
  */
- function validateNewQuestion (question, button)
- {
-    if(question.length >= 10 && question.length <= 255)
-    {
-        button.prop("disabled",false)
+ function validateNewQuestion (questionText, $button, questionType)
+{
+    if (
+        (
+            ((questionType == 'radio-input') && ($('.remove-option').length >= 2)) ||
+            ((questionType == 'checkbox-input') && ($('.remove-option').length >= 1)) ||
+            (questionType == 'text-input')
+        ) &&
+        questionText.length >= 10 &&
+        questionText.length <= 255
+    ) {
+        $button.prop("disabled",false)
     }
     else
     {
-        button.prop("disabled",true)
+        $button.prop("disabled",true)
     }
-
-    //TODO Add validation for radio options
-    //TODO Add validation for checkbox options
 }
