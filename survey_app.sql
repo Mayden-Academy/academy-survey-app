@@ -7,7 +7,7 @@
 #
 # Host: 192.168.20.56 (MySQL 5.6.33)
 # Database: survey_app
-# Generation Time: 2016-11-29 13:22:44 +0000
+# Generation Time: 2016-11-29 14:34:20 +0000
 # ************************************************************
 
 
@@ -28,7 +28,8 @@ DROP TABLE IF EXISTS `option`;
 CREATE TABLE `option` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `question_id` int(11) unsigned NOT NULL COMMENT 'Linked to question table id.',
-  `option_text` varchar(255) NOT NULL DEFAULT '',
+  `input_name` varchar(255) NOT NULL DEFAULT '',
+  `display_value` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `question_id` (`question_id`),
   CONSTRAINT `option_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`)
@@ -43,15 +44,41 @@ DROP TABLE IF EXISTS `question`;
 
 CREATE TABLE `question` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `type` varchar(255) NOT NULL DEFAULT '',
+  `text` varchar(255) NOT NULL DEFAULT '',
+  `type` int(11) unsigned NOT NULL COMMENT 'Linked to question_type table id.',
   `survey_id` int(11) unsigned NOT NULL COMMENT 'Linked to survey table id.',
   `required` tinyint(1) unsigned NOT NULL COMMENT 'Yes or no. 1 or 0.',
   PRIMARY KEY (`id`),
   KEY `survey_id` (`survey_id`),
-  CONSTRAINT `question_ibfk_1` FOREIGN KEY (`survey_id`) REFERENCES `survey` (`id`)
+  KEY `type` (`type`),
+  CONSTRAINT `question_ibfk_1` FOREIGN KEY (`survey_id`) REFERENCES `survey` (`id`),
+  CONSTRAINT `question_ibfk_2` FOREIGN KEY (`type`) REFERENCES `question_type` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+
+# Dump of table question_type
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `question_type`;
+
+CREATE TABLE `question_type` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `type` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+LOCK TABLES `question_type` WRITE;
+/*!40000 ALTER TABLE `question_type` DISABLE KEYS */;
+
+INSERT INTO `question_type` (`id`, `type`)
+VALUES
+	(1,'text'),
+	(2,'radio'),
+	(3,'checkbox');
+
+/*!40000 ALTER TABLE `question_type` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table survey
