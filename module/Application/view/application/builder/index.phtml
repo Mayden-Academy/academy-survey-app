@@ -13,7 +13,18 @@
     <h3>Questions</h3>
 </div>
 <div class="survey-section">
-
+    <form>
+        <label for="question">Question</label>
+        <input type="text" id="question" name="question">
+        <label for="question-type">Type</label>
+        <select>
+            <option>Text</option>
+            <option>Radio</option>
+            <option>Checkbox</option>
+        </select>
+        <label for="required">Required?</label>
+        <input type="checkbox" id="required" name="required">
+    </form>
 </div>
 <div class="survey-section">
     <button id="cancel-btn" class="btn btn-danger">Cancel</button>
