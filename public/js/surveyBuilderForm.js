@@ -24,6 +24,7 @@ $(function(){
                         '<button class="btn remove-option input-group-addon">-</button>' +
                         '</div>'
                     )
+
                     $optionInput.val('')
                     $('.remove-option').click(function(){
                         $(this).parent('div').remove()
@@ -46,21 +47,35 @@ $(function(){
 
     button.click(function(e)
         {
-            e.preventDefault()
             var question = $('#question').val()
             var type = $('#input-selector').val()
 
             var required = 'no'
-            if($('#required').is(':checked')){
+            if($('#required').is(':checked'))
+            {
                 required = 'yes'
             }
 
+            var options = $('#question-options').children('.input-group').children('input')
+            var optionsString = ''
+
+            if(options.length)
+            {
+                optionsString = '<br>Options: '
+                options.each(function(key,option)
+                {
+                    optionsString += option.value + ', '
+                })
+                optionsString = optionsString.substr(0,optionsString.length - 2)
+            }
+
             var div =   '<div class="new-question">' +
-                        'question: ' + question +
-                        '<br>' +
-                        'type: ' + type +
-                        ' required: ' + required +
-                    '</div>'
+                            'Question: ' + question +
+                            '<br>' +
+                            'Type: ' + type +
+                            ' Required: ' + required +
+                            optionsString +
+                        '</div>'
 
             $('#survey-section').append(div)
 
