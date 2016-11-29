@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <?= $this->headTitle('ZF Skeleton Application')->setSeparator(' - ')->setAutoEscape(false)->setTranslatorEnabled(false) ?>
+        <?= $this->headTitle('Survey Builder')->setSeparator(' - ')->setAutoEscape(false)->setTranslatorEnabled(false) ?>
 
         <?= $this->headMeta()
             ->appendName('viewport', 'width=device-width, initial-scale=1.0')
@@ -19,7 +19,7 @@
 
         <!-- Scripts -->
         <?= $this->headScript()
-            ->prepentFile($this->basePath('js/surveyBuilderForm.js'))
+            ->prependFile($this->basePath('js/surveyBuilderForm.js'))
             ->prependFile($this->basePath('js/bootstrap.min.js'))
             ->prependFile($this->basePath('js/jquery-3.1.0.min.js'))
         ?>
