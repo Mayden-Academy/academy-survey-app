@@ -14,6 +14,12 @@ class PdoFactory
         $dbname = "survey_app";
         $username = "root";
         $password = "";
-        return new \PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        try {
+            $pdo = new \PDO("mysql:dbname=$dbname;host=$servername", $username, $password);
+        } catch(Exception $e) {
+            echo 'Connection failed: ' . $e->getMessage();
+        }
+
+        return $pdo;
     }
 }

@@ -8,9 +8,19 @@ class AccountController extends AbstractActionController
 {
     private $user;
 
+    public function __construct($user)
+    {
+        $this->user = $user;
+    }
+
     public function indexAction()
     {
-        die(var_dump($this->user));
+        return new ViewModel();
+    }
+
+    public function postAction()
+    {
+        die('postAction');
         return new ViewModel();
     }
 }
