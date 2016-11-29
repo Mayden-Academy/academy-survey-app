@@ -7,7 +7,7 @@
 #
 # Host: 192.168.20.56 (MySQL 5.6.33)
 # Database: survey_app
-# Generation Time: 2016-11-29 11:20:11 +0000
+# Generation Time: 2016-11-29 13:22:44 +0000
 # ************************************************************
 
 
@@ -18,6 +18,56 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+
+# Dump of table option
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `option`;
+
+CREATE TABLE `option` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `question_id` int(11) unsigned NOT NULL COMMENT 'Linked to question table id.',
+  `option_text` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `question_id` (`question_id`),
+  CONSTRAINT `option_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+# Dump of table question
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `question`;
+
+CREATE TABLE `question` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `type` varchar(255) NOT NULL DEFAULT '',
+  `survey_id` int(11) unsigned NOT NULL COMMENT 'Linked to survey table id.',
+  `required` tinyint(1) unsigned NOT NULL COMMENT 'Yes or no. 1 or 0.',
+  PRIMARY KEY (`id`),
+  KEY `survey_id` (`survey_id`),
+  CONSTRAINT `question_ibfk_1` FOREIGN KEY (`survey_id`) REFERENCES `survey` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+# Dump of table survey
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `survey`;
+
+CREATE TABLE `survey` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `creator` int(11) unsigned NOT NULL COMMENT 'Linked to user table id',
+  PRIMARY KEY (`id`),
+  KEY `creator` (`creator`),
+  CONSTRAINT `survey_ibfk_1` FOREIGN KEY (`creator`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 
 # Dump of table user
