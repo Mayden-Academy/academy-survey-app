@@ -52,11 +52,12 @@ $(function(){
             var $questionContainer = $('#question-container')
             var $typeOptions = $('#question-options')
 
-            var question = $('#question').val()
-            var type = $('#input-selector').val()
+            var $question = $('#question')
+            var $type = $('#input-selector')
+            var $required = $('#required');
 
             var required = 'no'
-            if($('#required').is(':checked'))
+            if($required.is(':checked'))
             {
                 required = 'yes'
             }
@@ -76,9 +77,9 @@ $(function(){
 
             //ui-state-default makes sortable
             var div =   '<div class="new-question ui-state-default">' +
-                            '<b>Question:</b> ' + question +
+                            '<b>Question:</b> ' + $question.val() +
                             '<br>' +
-                            '<b>Type:</b> ' + type +
+                            '<b>Type:</b> ' + $type.val() +
                             '<br>' +
                             '<b>Required:</b> ' + required +
                             optionsString +
@@ -99,6 +100,10 @@ $(function(){
                 $(this).parent('.new-question').remove()
             })
 
+            //resetting form
+            $question.val('')
+            $type.val('text-input')
+            $required.prop('checked', false)
             $typeOptions.remove()
         }
     )
