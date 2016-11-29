@@ -4,7 +4,7 @@
     </div>
     <div class="survey-section">
         <form>
-            <label for="survey-name">Survey Name</label>
+            <label for="survey-name"><h3>Survey Name</h3></label>
             <input type="text" id="survey-name" name="survey-name">
         </form>
     </div>
@@ -13,20 +13,26 @@
     <h3>Questions</h3>
     <div id="question-container"></div>
 </div>
-<div class="survey-section question-adder">
-    <label for="question">Question</label>
-    <input type="text" id="question" name="question">
-    <label for="question-type">Type</label>
-    <select id="input-selector">
-        <option value="text-input" selected>Text</option>
-        <option value="radio-input">Radio</option>
-        <option value="checkbox-input">Checkbox</option>
-    </select>
-    <label for="required">Required?</label>
-    <input type="checkbox" id="required" name="required">
-    <input id="add-question" type="submit" value="Add">
+<hr>
+<div id="question-adder" class="survey-section">
+    <div id="input-container">
+        <div>
+            <label for="question">Question</label>
+            <input type="text" id="question" name="question">
+        </div>
+        <label for="input-selector">Type</label>
+        <select id="input-selector">
+            <option value="text-input" selected>Text</option>
+            <option value="radio-input">Radio</option>
+            <option value="checkbox-input">Checkbox</option>
+        </select>
+        <label for="required">Required?</label>
+        <input type="checkbox" id="required" name="required">
+    </div>
+    <input id="add-question" class="btn btn-sm btn-success" type="submit" value="Add">
 </div>
-<div class="survey-section">
+<hr>
+<div id="page-options" class="survey-section">
     <button id="cancel-btn" class="btn btn-danger">Cancel</button>
     <input id="submit-btn" class="btn btn-success" type="submit" value="Save Survey">
 </div>

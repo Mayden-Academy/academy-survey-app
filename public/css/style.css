@@ -43,5 +43,25 @@ div.container a.navbar-brand > img {
 .ui-state-highlight {
     height: 2px;
     width: 100%;
-    background-color: black;
+    background-color: #000000;
+}
+
+/* builder form */
+#page-options {
+    margin-top: 25px;
+}
+
+#question,
+.question-text {
+    width: 300px;
+    margin-bottom: 10px;
+}
+
+#input-selector {
+    margin-right: 10px;
+}
+
+#add-question {
+    margin-top: 10px;
+    display: block;
 }

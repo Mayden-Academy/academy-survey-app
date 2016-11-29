@@ -7,9 +7,10 @@ $(function(){
     {
         if ($('#input-selector').val() !== 'text-input' && $('#question-options').length < 1)
         {
-            $('.question-adder').append(
+            $('#input-container').append(
                 '<div id="question-options" class="input-group">' +
-                '<h4>Options:</h4>' +
+                '<label for="option-text">Options:</label>' +
+                '<br>' +
                 '<input type="text" id="option-text">' +
                 '<button class="btn input-group-addon" id="add-option">+</button>' +
                 '</div>'
@@ -65,7 +66,7 @@ $(function(){
 
             if(options.length)
             {
-                optionsString = '<br>Options: '
+                optionsString = '<br><b>Options:</b> '
                 options.each(function(key,option)
                 {
                     optionsString += option.value + ', '
@@ -75,13 +76,14 @@ $(function(){
 
             //ui-state-default makes sortable
             var div =   '<div class="new-question ui-state-default">' +
-                            'Question: ' + question +
+                            '<b>Question:</b> ' + question +
                             '<br>' +
-                            'Type: ' + type +
-                            ' Required: ' + required +
+                            '<b>Type:</b> ' + type +
+                            '<br>' +
+                            '<b>Required:</b> ' + required +
                             optionsString +
                             '<br>' +
-                            '<input type="submit" class="remove-question" value="Remove">' +
+                            '<input type="submit" class="remove-question btn btn-sm" value="Remove">' +
                         '</div>'
 
             $questionContainer.append(div)
