@@ -24,13 +24,23 @@ return [
                     ],
                 ],
             ],
-            'application' => [
-                'type'    => Segment::class,
+            'account' => [
+                'type'    => Literal::class,
                 'options' => [
-                    'route'    => '/application[/:action]',
+                    'route'    => '/account',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'index',
+                        'controller' => Controller\AccountController::class,
+                        'action'     => 'account',
+                    ],
+                ],
+            ],
+            'login' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/login',
+                    'defaults' => [
+                        'controller' => Controller\LoginController::class,
+                        'action'     => 'login',
                     ],
                 ],
             ],
@@ -39,6 +49,8 @@ return [
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
+            Controller\AccountController::class => InvokableFactory::class,
+            Controller\LoginController::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [
@@ -52,9 +64,16 @@ return [
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
+            'application/login/login' => __DIR__ . '/../view/application/login/login.phtml',
         ],
         'template_path_stack' => [
             __DIR__ . '/../view',
+        ],
+    ],
+    'services' => [
+        'factories' => [
+            'pdo' => Factory\PdoFactory::class,
+            Model\User::class => Factory\UserFactory::class,
         ],
     ],
 ];
