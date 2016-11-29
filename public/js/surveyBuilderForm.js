@@ -7,7 +7,7 @@ $(function(){
         $('#question-options').remove()
         if ($('#input-selector').val() !== 'text-input')
         {
-            $('.question-adder form').append(
+            $('.question-adder').append(
                 '<div id="question-options" class="input-group">' +
                 '<h4>Options:</h4>' +
                 '<input type="text" id="option-text">' +
@@ -25,6 +25,7 @@ $(function(){
                         '<button class="btn remove-option input-group-addon">-</button>' +
                         '</div>'
                     )
+
                     $optionInput.val('')
                     $('.remove-option').click(function(){
                         $(this).parent('div').remove()
@@ -41,7 +42,6 @@ $(function(){
 
     button.click(function(e)
         {
-            e.preventDefault()
             var question = $('#question').val()
             var type = $('#input-selector').val()
 
