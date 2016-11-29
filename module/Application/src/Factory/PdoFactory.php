@@ -14,6 +14,6 @@ class PdoFactory
         $dbname = "survey_app";
         $username = "root";
         $password = "";
-        return new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        return new \PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     }
 }

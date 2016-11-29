@@ -49,7 +49,7 @@ return [
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
-            Controller\AccountController::class => InvokableFactory::class,
+            Controller\AccountController::class => Factory\AccountControllerFactory::class,
             Controller\LoginController::class => InvokableFactory::class,
         ],
     ],
@@ -70,7 +70,7 @@ return [
             __DIR__ . '/../view',
         ],
     ],
-    'services' => [
+    'service_manager' => [
         'factories' => [
             'pdo' => Factory\PdoFactory::class,
             Model\User::class => Factory\UserFactory::class,
