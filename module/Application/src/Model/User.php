@@ -155,7 +155,6 @@ class User {
 
         $this->id = $id;
         return $this->setUserDetails($user);
-
     }
 
     public function setUserDetails($user){

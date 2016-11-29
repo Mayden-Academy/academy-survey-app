@@ -9,6 +9,7 @@ namespace Application;
 
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
+use Zend\Router\Http\Method;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
@@ -32,6 +33,24 @@ return [
                         'controller' => Controller\AccountController::class,
                         'action'     => 'index',
                     ],
+                ],
+                'may_terminate' => false,
+                'child_routes' => [
+                    'get' => [
+                        'type' => Method::class,
+                        'options' => [
+                            'verb' => 'get',
+                            'defaults' => [ 'action' => 'index'],
+                        ]
+                    ],
+                    'post' => [
+                        'type' => Method::class,
+                        'options' => [
+                            'verb' => 'post',
+                            'defaults' => [ 'action' => 'post'],
+                        ]
+                    ],
+
                 ],
             ],
             'login' => [

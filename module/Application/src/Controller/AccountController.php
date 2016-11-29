@@ -15,12 +15,25 @@ class AccountController extends AbstractActionController
 
     public function indexAction()
     {
-        return new ViewModel();
+        if(!empty($_SESSION['userAuth'])) {
+            try {
+                $this->user->validateToken($_SESSION['userAuth'], $_SESSION['id']);
+                return ViewModel();
+            } catch (Exception $e) {
+                session_destroy();
+                $header_str = 'Location: /login';
+                header($header_str);
+                die();
+            }
+        } else {
+            $header_str = 'Location: /login';
+            header($header_str);
+            die();
+        }
     }
 
-    public function postAction()
-    {
+    public function postAction() {
         die('postAction');
-        return new ViewModel();
     }
+
 }
