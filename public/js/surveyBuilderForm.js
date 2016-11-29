@@ -47,7 +47,6 @@ $(function(){
 
     button.click(function(e)
         {
-            $('#question-options').remove()
             var question = $('#question').val()
             var type = $('#input-selector').val()
 
@@ -86,6 +85,8 @@ $(function(){
             {
                 $(this).parent('.new-question').remove()
             })
+
+            $('#question-options').remove()
         }
     )
 })
