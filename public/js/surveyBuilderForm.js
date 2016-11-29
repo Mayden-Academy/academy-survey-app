@@ -1,5 +1,8 @@
 $(function(){
 
+    var button = $('#add-question')
+    button.prop("disabled",true)
+
     $('.question-adder .input-selector').change(function() {
         if ($('.input-selector .radio-input').prop('selected'))
         {
@@ -10,24 +13,23 @@ $(function(){
         }
     })
 
-    $('#add-question').click(function(e)
+    $('#question').keyup(function(e)
+    {
+        validateNewQuestion($('#question').val(), button)
+    })
+
+    button.click(function(e)
         {
             e.preventDefault()
+            var question = $('#question').val()
+            var type = $('#input-selector').val()
 
-            question = $('#question').val()
-            type = $('#input-selector').val()
-
-            required = 'no'
+            var required = 'no'
             if($('#required').is(':checked')){
                 required = 'yes'
             }
 
-            console.log(question)
-            console.log(type)
-            console.log(required)
-
-
-            div =   '<div class="new-question">' +
+            var div =   '<div class="new-question">' +
                         'question: ' + question +
                         '<br>' +
                         'type: ' + type +
@@ -38,4 +40,27 @@ $(function(){
 
         }
     )
+
+    /**
+     * Validates input of new question form
+     * Enables button if all inputs valid
+     *
+     * @param STRING question text in question's text box
+     * @param JQUERYSELECTOR button to be enabled
+     */
+     function validateNewQuestion (question, button)
+     {
+        if(question.length >= 10 && question.length <= 255)
+        {
+            button.prop("disabled",false)
+        }
+        else
+        {
+            button.prop("disabled",true)
+        }
+
+        //TODO Add validation for radio options
+        //TODO Add validation for checkbox options
+    }
 })
+
