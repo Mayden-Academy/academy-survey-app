@@ -7,7 +7,7 @@
 #
 # Host: 192.168.20.56 (MySQL 5.6.33)
 # Database: survey_app
-# Generation Time: 2016-11-29 13:38:08 +0000
+# Generation Time: 2016-11-29 14:34:20 +0000
 # ************************************************************
 
 
@@ -30,7 +30,6 @@ CREATE TABLE `option` (
   `question_id` int(11) unsigned NOT NULL COMMENT 'Linked to question table id.',
   `input_name` varchar(255) NOT NULL DEFAULT '',
   `display_value` varchar(255) NOT NULL DEFAULT '',
-  `display_text` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `question_id` (`question_id`),
   CONSTRAINT `option_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`)
