@@ -5,10 +5,10 @@ $(function()
         if (!$('.input-selector .text-input').prop('selected'))
         {
             $('.question-adder form').append(
-            '<div class="bg-info" id="question-options">' +
+            '<div id="question-options" class="input-group">' +
             '<h4>Options:</h4>' +
             '<input type="text" id="option-text">' +
-            '<button class="btn" id="add-option">+</button>' +
+            '<button class="btn input-group-addon" id="add-option">+</button>' +
             '</div>'
             )
 
@@ -17,9 +17,9 @@ $(function()
             $('#add-option').click(function() {
                 if($optionInput.val() !== '') {
                     $(this).after(
-                        '<div>' +
-                        '<span>' + $optionInput.val() + '</span>' +
-                        '<button class="btn remove-option">-</button>' +
+                        '<div class="input-group">' +
+                        '<input class="bg-success" value="' + $optionInput.val() + '" disabled>' +
+                        '<button class="btn remove-option input-group-addon">-</button>' +
                         '</div>'
                     )
                     $optionInput.val('')
