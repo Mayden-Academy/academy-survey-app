@@ -5,7 +5,7 @@ class User {
 
     private $id;
     private $email;
-    private $hash;
+    private $salt;
     private $canCreateUser;
     private $pdo;
 
@@ -88,7 +88,7 @@ class User {
      */
     public function changePassword($password){
 
-        $newPassword = $this->hash . $password;
+        $newPassword = $this->salt . $password;
         $newPassword = sha1($newPassword);
 
         $sql = "UPDATE `users` SET `password` = :password WHERE `id` = " . $this->id . ";";
@@ -123,7 +123,7 @@ class User {
             throw new Exception("user does not exist");
         }
 
-        $encryptPass = $user['hash'] . $password;
+        $encryptPass = $user['salt'] . $password;
         $encryptPass = sha1($encryptPass);
 
         if($user['password'] != $encryptPass) {
@@ -155,7 +155,6 @@ class User {
 
         $this->id = $id;
         return $this->setUserDetails($user);
-
     }
 
     public function setUserDetails($user){
@@ -163,7 +162,7 @@ class User {
         $this->id = $user['id'];
         $this->email = $user['email'];
         $this->canCreateUser = $user['canCreateUser'];
-        $this->hash = $user['hash'];
+        $this->salt = $user['salt'];
         return true;
     }
 
@@ -199,12 +198,12 @@ class User {
 
         // Let id auto increment
         unset($userFields['id']);
-        $userFields['hash'] = array_key_exists('hash', $userFields) ? $userFields['hash'] : mt_rand(1000,9999);
+        $userFields['salt'] = array_key_exists('salt', $userFields) ? $userFields['salt'] : mt_rand(1000,9999);
 
         // Required fields
         $userFields['department'] = !empty($userFields['department']) ?: 2; // Undefined as default
         if (!empty($userFields['password'])) {
-            $userFields['password'] = sha1($userFields['hash'] . $userFields['password']);
+            $userFields['password'] = sha1($userFields['salt'] . $userFields['password']);
         }
         return $userFields;
     }
