@@ -36,5 +36,8 @@ if (file_exists(__DIR__ . '/../config/development.config.php')) {
     $appConfig = ArrayUtils::merge($appConfig, require __DIR__ . '/../config/development.config.php');
 }
 
+//Session start
+session_start();
+
 // Run the application!
 Application::init($appConfig)->run();

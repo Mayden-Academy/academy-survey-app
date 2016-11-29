@@ -6,7 +6,6 @@ class User {
     private $id;
     private $email;
     private $salt;
-    private $canCreateUser;
     private $pdo;
 
     /**
@@ -25,18 +24,10 @@ class User {
 
         // Validate e-mail
         if(filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-            throw new Exception('not a valid email address');
+            throw new \Exception('not a valid email address');
         }
 
         return true;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCanCreateUser()
-    {
-        return $this->canCreateUser;
     }
 
     /**
@@ -55,11 +46,11 @@ class User {
             $_SESSION['id'] = $this->id;
             $_SESSION['email'] = $email;
 
-            $sql = "UPDATE `users` SET `validationString` = :token WHERE `id` = " . $this->id . ";";
+            $sql = "UPDATE `user` SET `validationString` = :token WHERE `id` = " . $this->id . ";";
             $query = $this->pdo->prepare($sql);
             return $query->execute([':token'=>$token]);
         } else {
-            throw new Exception('Invalid Login');
+            throw new \Exception('Invalid Login');
         }
     }
 
@@ -71,7 +62,7 @@ class User {
     public function changeEmail($newEmail){
 
         if($this->validateEmail($newEmail)){
-            $sql = "UPDATE `users` SET `email` = :email WHERE `id` = " . $this->id . ";";
+            $sql = "UPDATE `user` SET `email` = :email WHERE `id` = " . $this->id . ";";
             $query = $this->pdo->prepare($sql);
             $query->execute([':email'=>$newEmail]);
 
@@ -91,7 +82,7 @@ class User {
         $newPassword = $this->salt . $password;
         $newPassword = sha1($newPassword);
 
-        $sql = "UPDATE `users` SET `password` = :password WHERE `id` = " . $this->id . ";";
+        $sql = "UPDATE `user` SET `password` = :password WHERE `id` = " . $this->id . ";";
         $query = $this->pdo->prepare($sql);
         $query->execute([':password'=>$newPassword]);
 
@@ -111,23 +102,23 @@ class User {
     public function validateDetails($email, $password){
 
         if(!$this->validateEmail($email)) {
-            throw new Exception("not valid email");
+            throw new \Exception("not valid email");
         }
 
-        $sql = "SELECT * FROM `users` WHERE `email` = :email;";
+        $sql = "SELECT * FROM `user` WHERE `email` = :email;";
         $query = $this->pdo->prepare($sql);
         $query->execute([':email'=>$email]);
-        $user = $query->fetch(PDO::FETCH_ASSOC);
+        $user = $query->fetch(\PDO::FETCH_ASSOC);
 
         if(empty($user)) {
-            throw new Exception("user does not exist");
+            throw new \Exception("user does not exist");
         }
 
         $encryptPass = $user['salt'] . $password;
         $encryptPass = sha1($encryptPass);
 
         if($user['password'] != $encryptPass) {
-            throw new Exception("incorrect email and password combination");
+            throw new \Exception("incorrect email and password combination");
         } else {
             $this->setUserDetails($user);
             return true;
@@ -141,16 +132,17 @@ class User {
      * @param STRING $token validation string to check against database
      * @param STRING $id id of user to check validation string against
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function validateToken($token, $id) {
-        $sql = "SELECT `users`.*, `permissions`.`canCreateUser` FROM `users` LEFT JOIN  `permissions` ON `users`.`id`=`permissions`.`userId` WHERE `id` = :id;";
+//        $sql = "SELECT `user`.*, `permissions`.`canCreateUser` FROM `user` LEFT JOIN  `permissions` ON `user`.`id`=`permissions`.`userId` WHERE `id` = :id;";
+        $sql = "SELECT * FROM `user` WHERE `id` = :id;";
         $query = $this->pdo->prepare($sql);
         $query->execute([':id' => $id]);
-        $user = $query->fetch(PDO::FETCH_ASSOC);
+        $user = $query->fetch(\PDO::FETCH_ASSOC);
 
         if ($token != $user['validationString']) {
-            throw new Exception('error validating user');
+            throw new \Exception('error validating user');
         }
 
         $this->id = $id;
@@ -161,7 +153,6 @@ class User {
         //set details
         $this->id = $user['id'];
         $this->email = $user['email'];
-        $this->canCreateUser = $user['canCreateUser'];
         $this->salt = $user['salt'];
         return true;
     }
@@ -177,7 +168,7 @@ class User {
         $userFields = $this->setAddUserDataDefaults($userFields);
 
         $columns = preg_replace('/(\w+)/', '`$1`', array_keys($userFields));
-        $queryString = 'INSERT INTO `users` (' .
+        $queryString = 'INSERT INTO `user` (' .
             implode(', ', $columns) .
             ') ' .
             'VALUES (' .
