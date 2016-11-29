@@ -70,10 +70,16 @@ $(function(){
                             'Type: ' + type +
                             ' Required: ' + required +
                             optionsString +
+                            '<br>' +
+                            '<input type="submit" class="remove-question" value="Remove">' +
                         '</div>'
 
             $('#survey-section').append(div)
 
+            $('.remove-question').click(function()
+            {
+                $(this).parent('.new-question').remove()
+            })
         }
     )
 })
