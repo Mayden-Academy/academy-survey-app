@@ -10,4 +10,32 @@ $(function(){
         }
     })
 
+    $('#add-question').click(function(e)
+        {
+            e.preventDefault()
+
+            question = $('#question').val()
+            type = $('#input-selector').val()
+
+            required = 'no'
+            if($('#required').is(':checked')){
+                required = 'yes'
+            }
+
+            console.log(question)
+            console.log(type)
+            console.log(required)
+
+
+            div =   '<div class="new-question">' +
+                        'question: ' + question +
+                        '<br>' +
+                        'type: ' + type +
+                        ' required: ' + required +
+                    '</div>'
+
+            $('#survey-section').append(div)
+
+        }
+    )
 })
