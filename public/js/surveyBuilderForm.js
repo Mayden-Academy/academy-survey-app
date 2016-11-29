@@ -11,17 +11,22 @@ $(function()
             '<button class="btn" id="add-option">+</button>' +
             '</div>'
             )
+
+            var $optionInput = $('#option-text')
+
             $('#add-option').click(function() {
-                $(this).after(
-                    '<div>' +
-                    '<div>' + $('#option-text').val() + '</div>' +
-                    '<button class="btn remove-option">-</button>' +
-                    '</div>'
-                )
-                $('#option-text').val('')
-                $('.remove-option').click(function(){
-                    $(this).parent('div').remove()
-                })
+                if($optionInput.val() !== '') {
+                    $(this).after(
+                        '<div>' +
+                        '<span>' + $optionInput.val() + '</span>' +
+                        '<button class="btn remove-option">-</button>' +
+                        '</div>'
+                    )
+                    $optionInput.val('')
+                    $('.remove-option').click(function(){
+                        $(this).parent('div').remove()
+                    })
+                }
             })
         } else
         {
