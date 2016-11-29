@@ -24,6 +24,16 @@ return [
                     ],
                 ],
             ],
+            'account' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route'    => '/account',
+                    'defaults' => [
+                        'controller' => Controller\AccountController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
             'application' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -39,6 +49,7 @@ return [
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
+            Controller\AccountController::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [
