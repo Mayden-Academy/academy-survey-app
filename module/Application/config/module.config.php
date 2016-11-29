@@ -34,12 +34,12 @@ return [
                     ],
                 ],
             ],
-            'application' => [
-                'type'    => Segment::class,
+            'builder' => [
+                'type'    => Literal::class,
                 'options' => [
-                    'route'    => '/application[/:action]',
+                    'route'    => '/builder',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => Controller\BuilderController::class,
                         'action'     => 'index',
                     ],
                 ],
@@ -50,6 +50,7 @@ return [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
             Controller\AccountController::class => InvokableFactory::class,
+            Controller\BuilderController::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [
