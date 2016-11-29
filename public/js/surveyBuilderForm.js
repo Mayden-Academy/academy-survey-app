@@ -1,6 +1,7 @@
 $(function(){
-    var button = $('#add-question')
-    button.prop("disabled",true)
+    var addQuestionButton = $('#add-question')
+
+    addQuestionButton.prop("disabled",true)
 
     $('#input-selector').change(function()
     {
@@ -28,25 +29,28 @@ $(function(){
                     $optionInput.val('')
                     $('.remove-option').click(function(){
                         $(this).parent('div').remove()
-                        validateNewQuestion($('#question').val(), button, $('#input-selector').val())
+                        validateNewQuestion($('#question').val(), addQuestionButton, $('#input-selector').val())
                     })
                 }
 
-                validateNewQuestion($('#question').val(), button, $('#input-selector').val())
+                validateNewQuestion($('#question').val(), addQuestionButton, $('#input-selector').val())
             })
         } else if($('#input-selector').val() == 'text-input') {
             $('#question-options').remove()
         }
-        validateNewQuestion($('#question').val(), button, $('#input-selector').val())
+        validateNewQuestion($('#question').val(), addQuestionButton, $('#input-selector').val())
     })
 
     $('#question').keyup(function(e)
     {
-        validateNewQuestion($('#question').val(), button, $('#input-selector').val())
+        validateNewQuestion($('#question').val(), addQuestionButton, $('#input-selector').val())
     })
 
-    button.click(function(e)
+    addQuestionButton.click(function(e)
         {
+            var $questionContainer = $('#question-container')
+            var $typeOptions = $('#question-options')
+
             var question = $('#question').val()
             var type = $('#input-selector').val()
 
@@ -56,7 +60,7 @@ $(function(){
                 required = 'yes'
             }
 
-            var options = $('#question-options').children('.input-group').children('input')
+            var options = $typeOptions.children('.input-group').children('input')
             var optionsString = ''
 
             if(options.length)
@@ -69,7 +73,8 @@ $(function(){
                 optionsString = optionsString.substr(0,optionsString.length - 2)
             }
 
-            var div =   '<div class="new-question">' +
+            //ui-state-default makes sortable
+            var div =   '<div class="new-question ui-state-default">' +
                             'Question: ' + question +
                             '<br>' +
                             'Type: ' + type +
@@ -79,14 +84,20 @@ $(function(){
                             '<input type="submit" class="remove-question" value="Remove">' +
                         '</div>'
 
-            $('#survey-section').append(div)
+            $questionContainer.append(div)
+
+            $questionContainer.sortable(
+                {
+                    placeholder: "ui-state-highlight"
+                }
+            )
 
             $('.remove-question').click(function()
             {
                 $(this).parent('.new-question').remove()
             })
 
-            $('#question-options').remove()
+            $typeOptions.remove()
         }
     )
 })
