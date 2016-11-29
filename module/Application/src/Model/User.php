@@ -55,40 +55,6 @@ class User {
     }
 
     /**
-     * updates user email in database and $_SESSION
-     *
-     * @param STRING $newEmail email to add to database
-     */
-    public function changeEmail($newEmail){
-
-        if($this->validateEmail($newEmail)){
-            $sql = "UPDATE `user` SET `email` = :email WHERE `id` = " . $this->id . ";";
-            $query = $this->pdo->prepare($sql);
-            $query->execute([':email'=>$newEmail]);
-
-            $_SESSION['email'] = $newEmail;
-        }
-
-
-    }
-
-    /**
-     * updates user password in database
-     *
-     * @param STRING $newPassword password to add to database
-     */
-    public function changePassword($password){
-
-        $newPassword = $this->salt . $password;
-        $newPassword = sha1($newPassword);
-
-        $sql = "UPDATE `user` SET `password` = :password WHERE `id` = " . $this->id . ";";
-        $query = $this->pdo->prepare($sql);
-        $query->execute([':password'=>$newPassword]);
-
-    }
-
-    /**
      * validates user login details:
      * if email and password match database then sets $loggedIn to TRUE
      *
@@ -156,48 +122,4 @@ class User {
         $this->salt = $user['salt'];
         return true;
     }
-
-    /**
-     * Add a user to the database with an a
-     *
-     * @param $userFields ARRAY An associative array of user data of the form $arr['column'] = value
-     * @return STRING A PDOStatement error code, 00000 is ok.
-     */
-    public function addUser($userFields) {
-
-        $userFields = $this->setAddUserDataDefaults($userFields);
-
-        $columns = preg_replace('/(\w+)/', '`$1`', array_keys($userFields));
-        $queryString = 'INSERT INTO `user` (' .
-            implode(', ', $columns) .
-            ') ' .
-            'VALUES (' .
-            implode(', ', array_fill(0, count($userFields), '?')) .
-            ');';
-        $statement = $this->pdo->prepare($queryString);
-        $statement->execute(array_values($userFields));
-        return $statement->errorCode();
-    }
-
-    /**
-     * Populate the userFields passed to addUser array with appropriate defaults.
-     *
-     * @param $userFields ARRAY An associative array of user data of the form $arr['column'] = value
-     * @return ARRAY userFields populated with appropriate defaults.
-     */
-    private function setAddUserDataDefaults($userFields) {
-
-        // Let id auto increment
-        unset($userFields['id']);
-        $userFields['salt'] = array_key_exists('salt', $userFields) ? $userFields['salt'] : mt_rand(1000,9999);
-
-        // Required fields
-        $userFields['department'] = !empty($userFields['department']) ?: 2; // Undefined as default
-        if (!empty($userFields['password'])) {
-            $userFields['password'] = sha1($userFields['salt'] . $userFields['password']);
-        }
-        return $userFields;
-    }
-
-
 }
