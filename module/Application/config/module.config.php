@@ -58,12 +58,4 @@ return [
             __DIR__ . '/../view',
         ],
     ],
-    'view_helpers' => [
-        'factories' => [
-            'Form\BuilderFormViewHelper' => \Zend\ServiceManager\Factory\InvokableFactory::class,
-        ],
-        'aliases' => [
-            'builderForm' => Form\BuilderFormViewHelper::class,
-        ],
-    ],
 ];
