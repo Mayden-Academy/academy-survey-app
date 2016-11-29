@@ -9,7 +9,7 @@
         </form>
     </div>
 </div>
-<div class="survey-section">
+<div id="survey-section">
     <h3>Questions</h3>
 </div>
 <div class="survey-section question-adder">
@@ -17,10 +17,10 @@
         <label for="question">Question</label>
         <input type="text" id="question" name="question">
         <label for="question-type">Type</label>
-        <select class="input-selector">
-            <option class="text-input" selected>Text</option>
-            <option class="radio-input">Radio</option>
-            <option class="checkbox-input">Checkbox</option>
+        <select id="input-selector">
+            <option value="text-input" selected>Text</option>
+            <option value="radio-input">Radio</option>
+            <option value="checkbox-input">Checkbox</option>
         </select>
         <label for="required">Required?</label>
         <input type="checkbox" id="required" name="required">

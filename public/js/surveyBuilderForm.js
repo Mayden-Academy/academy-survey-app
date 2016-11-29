@@ -1,15 +1,16 @@
-$(function()
-{
-    $('.question-adder .input-selector').change(function() {
+$(function(){
+
+    $('.question-adder #input-selector').change(function()
+    {
         $('#question-options').remove()
-        if (!$('.input-selector .text-input').prop('selected'))
+        if ($('#input-selector').val() !== 'text-input')
         {
             $('.question-adder form').append(
-            '<div id="question-options" class="input-group">' +
-            '<h4>Options:</h4>' +
-            '<input type="text" id="option-text">' +
-            '<button class="btn input-group-addon" id="add-option">+</button>' +
-            '</div>'
+                '<div id="question-options" class="input-group">' +
+                '<h4>Options:</h4>' +
+                '<input type="text" id="option-text">' +
+                '<button class="btn input-group-addon" id="add-option">+</button>' +
+                '</div>'
             )
 
             var $optionInput = $('#option-text')
@@ -28,14 +29,38 @@ $(function()
                     })
                 }
             })
-        } else
-        {
         }
     })
 
+    $('#add-question').click(function(e)
+        {
+            e.preventDefault()
 
+            question = $('#question').val()
+            type = $('#input-selector').val()
+
+            required = 'no'
+            if($('#required').is(':checked')){
+                required = 'yes'
+            }
+
+            console.log(question)
+            console.log(type)
+            console.log(required)
+
+
+            div =   '<div class="new-question">' +
+                        'question: ' + question +
+                        '<br>' +
+                        'type: ' + type +
+                        ' required: ' + required +
+                    '</div>'
+
+            $('#survey-section').append(div)
+
+        }
+    )
 })
-
 
 
 //$('body').css('background', 'red')
