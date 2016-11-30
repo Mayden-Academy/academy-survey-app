@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: benmorris
- * Date: 29/11/2016
- * Time: 12:32
- */
 
 namespace Application\Controller;
 
@@ -31,8 +25,7 @@ class UserAuthenticationController extends AbstractActionController
                 exit;
             }  else {
                 session_destroy();
-                header(self::LOGIN_HEADER);
-                exit;
+                return new ViewModel();
             }
         } else {
             return new ViewModel();
