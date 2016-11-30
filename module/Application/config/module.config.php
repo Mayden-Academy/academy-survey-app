@@ -102,7 +102,17 @@ return [
                         'action'     => 'logout',
                     ],
                 ],
-            ]
+            ],
+            'viewSurvey' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/survey/:surveyId',
+                    'defaults' => [
+                        'controller' => Controller\SurveyController::class,
+                        'action'     => 'view',
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
