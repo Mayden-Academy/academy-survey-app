@@ -59,24 +59,26 @@ $(function(){
             var question = $question.val()
             var type = $type.val().slice(0, $type.val().length - 6)
             var options = $typeOptions.children('.input-group').children('input')
-            var response = ''
+            var response = '<div class="options">'
 
             if($required.is(':checked')){
                 question += ' *'
             }
 
             if(type == 'text') {
-                response = '<input type="text"  ><br>'
+                response += '<input type="text"  ><br>'
             } else {
                 if(options.length)
                 {
-                    response = '<b>Options:</b><br>'
+                    response += '<b>Options:</b><br>'
                     options.each(function(key,option)
                     {
                         response += '<input type="' + type + '" disabled value="' + option.value + '"> ' + option.value + '<br>'
                     })
                 }
             }
+
+            response += '</div>'
 
             var div =   '<div class="new-question ui-state-default">' +
                             '<h5>' + question + '</h5>' +
