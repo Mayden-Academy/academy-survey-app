@@ -60,7 +60,6 @@ return [
                             'defaults' => [ 'action' => 'post'],
                         ]
                     ],
-
                 ],
             ],
             'login' => [
