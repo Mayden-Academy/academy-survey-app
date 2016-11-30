@@ -66,7 +66,7 @@ $(function(){
             }
 
             if(type == 'text') {
-                response += '<input type="text"  ><br>'
+                response += '<input type="text" disabled ><br>'
             } else {
                 if(options.length)
                 {
