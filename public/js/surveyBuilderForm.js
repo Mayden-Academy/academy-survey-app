@@ -105,6 +105,7 @@ $(function(){
             $type.val('text-input')
             $required.prop('checked', false)
             $typeOptions.remove()
+            addQuestionButton.prop("disabled",true)
         }
     )
 })
