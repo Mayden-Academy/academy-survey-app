@@ -9,6 +9,7 @@ namespace Application;
 
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
+use Zend\Router\Http\Method;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
@@ -33,6 +34,24 @@ return [
                         'action'     => 'index',
                     ],
                 ],
+                'may_terminate' => false,
+                'child_routes' => [
+                    'get' => [
+                        'type' => Method::class,
+                        'options' => [
+                            'verb' => 'get',
+                            'defaults' => [ 'action' => 'index'],
+                        ]
+                    ],
+                    'post' => [
+                        'type' => Method::class,
+                        'options' => [
+                            'verb' => 'post',
+                            'defaults' => [ 'action' => 'post'],
+                        ]
+                    ],
+
+                ],
             ],
             'builder' => [
                 'type'    => Literal::class,
@@ -41,6 +60,16 @@ return [
                     'defaults' => [
                         'controller' => Controller\BuilderController::class,
                         'action'     => 'index',
+                    ]
+                ]
+            ],
+            'login' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/login',
+                    'defaults' => [
+                        'controller' => Controller\LoginController::class,
+                        'action'     => 'login',
                     ],
                 ],
             ],
@@ -49,8 +78,9 @@ return [
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
-            Controller\AccountController::class => InvokableFactory::class,
             Controller\BuilderController::class => InvokableFactory::class,
+            Controller\AccountController::class => Factory\AccountControllerFactory::class,
+            Controller\LoginController::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [
@@ -64,9 +94,16 @@ return [
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
+            'application/login/login' => __DIR__ . '/../view/application/login/login.phtml',
         ],
         'template_path_stack' => [
             __DIR__ . '/../view',
+        ],
+    ],
+    'service_manager' => [
+        'factories' => [
+            'pdo' => Factory\PdoFactory::class,
+            Model\User::class => Factory\UserFactory::class,
         ],
     ],
 ];
