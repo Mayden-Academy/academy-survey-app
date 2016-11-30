@@ -3,40 +3,71 @@ $(function(){
 
     addQuestionButton.prop("disabled",true)
 
+    /**
+     *
+     *
+     * @param $container
+     */
+    function addOptionsCreator($container) // pass $('#input-container')
+    {
+        $container.append(
+            '<div id="question-options" class="input-group">' +
+            '<label for="option-text">Options:</label>' +
+            '<br>' +
+            '<input type="text" id="option-text">' +
+            '<button class="btn input-group-addon" id="add-option">+</button>' +
+            '</div>'
+        )
+
+        createAddOptionHandler()
+    }
+
+    function createAddOptionHandler()
+    {
+        $('#add-option').click(function()
+        {
+            if($('#option-text').val() !== '')
+            {
+                createOption($('#option-text'))
+            }
+
+            validateNewQuestion($('#question').val(), addQuestionButton, $('#input-selector').val())
+        })
+    }
+
+    function  createOption($optionText) // pass $('#option-text')
+    {
+        $('#add-option').after( //TODO make the questions output in order, either above or below #add-option
+            '<div class="input-group">' +
+            '<input class="bg-success" value="' + $optionText.val() + '" disabled>' +
+            '<button class="btn remove-option input-group-addon">-</button>' +
+            '</div>'
+        )
+        $optionText.val('')
+
+        $('.remove-option').click(function()
+        {
+            removeOption(this)
+        })
+
+    }
+
+    function removeOption(currentOption)
+    {
+        $(currentOption).parent('div').remove()
+        validateNewQuestion($('#question').val(), addQuestionButton, $('#input-selector').val())
+    }
+
+
+
     $('#input-selector').change(function()
     {
         if ($('#input-selector').val() !== 'text-input' && $('#question-options').length < 1)
         {
-            $('#input-container').append(
-                '<div id="question-options" class="input-group">' +
-                '<label for="option-text">Options:</label>' +
-                '<br>' +
-                '<input type="text" id="option-text">' +
-                '<button class="btn input-group-addon" id="add-option">+</button>' +
-                '</div>'
-            )
+            addOptionsCreator($('#input-container'))
 
-            var $optionInput = $('#option-text')
-
-            $('#add-option').click(function() {
-                if($optionInput.val() !== '') {
-                    $(this).after(
-                        '<div class="input-group">' +
-                        '<input class="bg-success" value="' + $optionInput.val() + '" disabled>' +
-                        '<button class="btn remove-option input-group-addon">-</button>' +
-                        '</div>'
-                    )
-
-                    $optionInput.val('')
-                    $('.remove-option').click(function(){
-                        $(this).parent('div').remove()
-                        validateNewQuestion($('#question').val(), addQuestionButton, $('#input-selector').val())
-                    })
-                }
-
-                validateNewQuestion($('#question').val(), addQuestionButton, $('#input-selector').val())
-            })
-        } else if($('#input-selector').val() == 'text-input') {
+        } else if($('#input-selector').val() == 'text-input')
+        {
             $('#question-options').remove()
         }
         validateNewQuestion($('#question').val(), addQuestionButton, $('#input-selector').val())
@@ -62,7 +93,7 @@ $(function(){
                 required = 'yes'
             }
 
-            var options = $typeOptions.children('.input-group').children('input')
+            var options = $typeOptions.children('.input-group').children('input') //TODO change first children to .find(.imputgp input)
             var optionsString = ''
 
             if(options.length)
