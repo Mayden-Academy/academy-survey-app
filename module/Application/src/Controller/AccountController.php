@@ -36,7 +36,13 @@ class AccountController extends AbstractActionController
 
     public function loginAction() {
 
-        $clean = self::cleanData($this->params()->fromPost());
+        try {
+            $clean = self::cleanData($this->params()->fromPost());
+        } catch (\Exception $e) {
+            // TODO Post errrrrrror message to login page and display.
+            header(self::LOGIN_HEADER);
+            exit;
+        }
 
         try {
             if ($this->userModel->login($clean['email'], $clean['password'])) {
