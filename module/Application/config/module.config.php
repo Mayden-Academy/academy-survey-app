@@ -20,8 +20,8 @@ return [
                 'options' => [
                     'route'    => '/',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'index',
+                        'controller' => Controller\LoginController::class,
+                        'action'     => 'login',
                     ],
                 ],
             ],
@@ -103,16 +103,16 @@ return [
                     ],
                 ],
             ],
-            'viewSurvey' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/survey/:surveyId',
-                    'defaults' => [
-                        'controller' => Controller\SurveyController::class,
-                        'action'     => 'view',
-                    ],
-                ],
-            ],
+//            'viewSurvey' => [
+//                'type'    => Segment::class,
+//                'options' => [
+//                    'route'    => '/survey/:surveyId',
+//                    'defaults' => [
+//                        'controller' => Controller\SurveyController::class,
+//                        'action'     => 'view',
+//                    ],
+//                ],
+//            ],
         ],
     ],
     'controllers' => [
