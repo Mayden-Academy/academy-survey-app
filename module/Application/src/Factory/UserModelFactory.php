@@ -8,11 +8,11 @@
 
 namespace Application\Factory;
 
-class UserFactory
+class UserModelFactory
 {
     public function __invoke($sm)
     {
         $pdo = $sm->get('pdo');
-        return new \Application\Model\User($pdo);
+        return new \Application\Model\UserModel($pdo);
     }
 }
