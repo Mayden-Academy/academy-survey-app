@@ -9,15 +9,16 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Application\Model\UserModel;
 
 class BuilderController extends AbstractActionController
 {
     private $user;
     const LOGIN_HEADER = 'Location: /login';
 
-    public function __construct($user)
+    public function __construct(UserModel $userModel)
     {
-        $this->user = $user;
+        $this->user = $userModel;
     }
 
     public function indexAction()
