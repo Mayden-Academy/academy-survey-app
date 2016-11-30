@@ -36,13 +36,7 @@ class AccountController extends AbstractActionController
 
     public function postAction() {
 
-        $clean = [];
-        if (!empty($_POST['email'])) {
-            $clean['email'] = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-        }
-        if (!empty($_POST['password'])) {
-            $clean['password']  = filter_var($_POST['password'], FILTER_SANITIZE_STRING);
-        }
+        $clean = self::cleanData($this->params()->fromPost());
 
         try {
             if ($this->user->login($clean['email'], $clean['password'])) {
@@ -59,4 +53,29 @@ class AccountController extends AbstractActionController
 
     }
 
+    static public function cleanData($data) {
+
+        $clean = [];
+
+        if(empty($data['email']) && empty($data['password'])) {
+            if (empty($data)) {
+                throw new \Exception('$_POST is empty');
+            } else {
+                throw new \Exception('$_POST is missing email and password');
+            }
+        }
+
+        if (!empty($data['email'])) {
+            $clean['email'] = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
+        } else {
+            throw new \Exception('Missing email');
+        }
+
+        if (!empty($data['password'])) {
+            $clean['password']  = filter_var($data['password'], FILTER_SANITIZE_STRING);
+        } else {
+            throw new \Exception('Missing password');
+        }
+        return $clean;
+    }
 }
