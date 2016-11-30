@@ -58,6 +58,10 @@ div.container a.navbar-brand > img {
     background-color: #f4f4f4;
 }
 
+.options {
+    margin-bottom: 10px;
+}
+
 #page-options {
     margin-top: 25px;
 }

@@ -66,13 +66,13 @@ $(function(){
             }
 
             if(type == 'text') {
-                response += '<input type="text" disabled ><br>'
+                response += '<input type="text" disabled >'
             } else {
                 if(options.length)
                 {
                     options.each(function(key,option)
                     {
-                        response += '<input type="' + type + '" disabled value="' + option.value + '"> ' + option.value + '<br>'
+                        response += '<div><input type="' + type + '" disabled value="' + option.value + '"> ' + option.value + '</div>'
                     })
                 }
             }
@@ -82,7 +82,6 @@ $(function(){
             var newQuestion =   '<div class="new-question ui-state-default">' +
                             '<h5>' + question + '</h5>' +
                             response +
-                            '<br>' +
                             '<input type="submit" class="remove-question btn btn-sm" value="Remove">' +
                         '</div>'
             
