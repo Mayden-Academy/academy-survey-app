@@ -9,6 +9,7 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Application\Model\SurveyModel;
+use Zend\View\Model\JsonModel;
 
 class SurveyController extends AbstractActionController
 {
@@ -21,8 +22,7 @@ class SurveyController extends AbstractActionController
 
     public function createAction()
     {
-        //var_dump($this->params()->fromPost('survey_name')); exit;
-        //decode JSON($data) and manipulate to fit the PDO insert
-        //validation and return for model
+        $response = ['success' => $this->model->save($this->params()->fromPost())];
+        return new JsonModel($response);
     }
 }
