@@ -73,6 +73,27 @@ return [
                     ],
                 ],
             ],
+            'surveySave' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/survey/create',
+                    'defaults' => [
+                        'controller' => Controller\SurveyController::class,
+                        'action'     => 'create',
+                    ],
+                ],
+                'may_terminate' => false,
+                'child_routes' => [
+                    'post' => [
+                        'type' => Method::class,
+                        'options' => [
+                            'verb' => 'post',
+                            'defaults' => [ 'action' => 'create'],
+                        ]
+                    ],
+
+                ],
+            ],
         ],
     ],
     'controllers' => [
@@ -81,6 +102,7 @@ return [
             Controller\BuilderController::class => InvokableFactory::class,
             Controller\AccountController::class => Factory\AccountControllerFactory::class,
             Controller\LoginController::class => InvokableFactory::class,
+            Controller\SurveyController::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [
