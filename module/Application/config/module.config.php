@@ -102,7 +102,7 @@ return [
             Controller\BuilderController::class => InvokableFactory::class,
             Controller\AccountController::class => Factory\AccountControllerFactory::class,
             Controller\LoginController::class => InvokableFactory::class,
-            Controller\SurveyController::class => InvokableFactory::class,
+            Controller\SurveyController::class => Factory\SurveyControllerFactory::class,
         ],
     ],
     'view_manager' => [
