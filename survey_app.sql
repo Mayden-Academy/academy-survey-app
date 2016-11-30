@@ -7,7 +7,7 @@
 #
 # Host: 192.168.20.56 (MySQL 5.6.33)
 # Database: survey_app
-# Generation Time: 2016-11-30 09:56:44 +0000
+# Generation Time: 2016-11-30 10:02:59 +0000
 # ************************************************************
 
 
@@ -28,7 +28,6 @@ DROP TABLE IF EXISTS `option`;
 CREATE TABLE `option` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `question_id` int(11) unsigned NOT NULL COMMENT 'Linked to question table id.',
-  `input_name` varchar(255) NOT NULL DEFAULT '',
   `display_value` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `question_id` (`question_id`),
