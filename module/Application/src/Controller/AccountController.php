@@ -1,26 +1,27 @@
 <?php
 namespace Application\Controller;
 
+use Application\Model\UserModel;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\View;
 
 class AccountController extends AbstractActionController
 {
-    private $user;
+    private $userModel;
     const LOGIN_HEADER = 'Location: /login';
     const ACCOUNT_HEADER = 'Location: /account';
 
-    public function __construct($user)
+    public function __construct(UserModel $userModel)
     {
-        $this->user = $user;
+        $this->userModel = $userModel;
     }
 
     public function indexAction()
     {
         if(!empty($_SESSION['userAuth'])) {
             try {
-                $this->user->validateToken($_SESSION['userAuth'], $_SESSION['id']);
+                $this->userModel->validateToken($_SESSION['userAuth'], $_SESSION['id']);
                 return new ViewModel();
             } catch (Exception $e) {
                 session_destroy();
@@ -28,7 +29,6 @@ class AccountController extends AbstractActionController
                 exit;
             }
         } else {
-            $header_str = 'Location: /login';
             header(self::LOGIN_HEADER);
             exit;
         }
@@ -39,7 +39,7 @@ class AccountController extends AbstractActionController
         $clean = self::cleanData($this->params()->fromPost());
 
         try {
-            if ($this->user->login($clean['email'], $clean['password'])) {
+            if ($this->userModel->login($clean['email'], $clean['password'])) {
                 header(self::ACCOUNT_HEADER);
                 exit;
             } else {
