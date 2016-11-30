@@ -48,7 +48,7 @@ $(function(){
      */
     function  createOption($optionText)
     {
-        $('#add-option').after( //TODO make the questions output in order, either above or below #add-option
+        $('#option-text').before(
             '<div class="input-group">' +
             '<input class="bg-success" value="' + $optionText.val() + '" disabled>' +
             '<button class="btn remove-option input-group-addon">-</button>' +
