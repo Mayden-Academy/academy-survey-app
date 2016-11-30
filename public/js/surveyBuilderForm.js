@@ -4,11 +4,12 @@ $(function(){
     addQuestionButton.prop("disabled",true)
 
     /**
+     * Adds the facility to add and remove options for multiple choice questions. Initially this consists of a text
+     * field and an add option (+) button.
      *
-     *
-     * @param $container
+     * @param $container OBJECT the created DOM objects are appended to the contents of this html element
      */
-    function addOptionsCreator($container) // pass $('#input-container')
+    function addOptionsCreator($container)
     {
         $container.append(
             '<div id="question-options" class="input-group">' +
@@ -22,11 +23,16 @@ $(function(){
         createAddOptionHandler()
     }
 
+    /**
+     * Creates a handler for the click event on the add option button. The handler adds the option (providing it's
+     * non-empty) to the list of options for that question.
+     * Then validates the form.
+     */
     function createAddOptionHandler()
     {
         $('#add-option').click(function()
         {
-            if($('#option-text').val() !== '')
+            if($('#option-text').val() !== '') // disables an empty string being added as an option
             {
                 createOption($('#option-text'))
             }
@@ -35,7 +41,12 @@ $(function(){
         })
     }
 
-    function  createOption($optionText) // pass $('#option-text')
+    /**
+     * Creates a disabled field containing the text passed in, with a remove (-) button .
+     *
+     * @param $optionText OBJECT the text input element containing the text for the option being created
+     */
+    function  createOption($optionText)
     {
         $('#add-option').after( //TODO make the questions output in order, either above or below #add-option
             '<div class="input-group">' +
@@ -52,6 +63,11 @@ $(function(){
 
     }
 
+    /**
+     * Removes the selected option from the list and then validates the form.
+     *
+     * @param currentOption OBJECT the remove button for the option to be removed
+     */
     function removeOption(currentOption)
     {
         $(currentOption).parent('div').remove()
