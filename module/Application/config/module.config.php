@@ -25,6 +25,16 @@ return [
                     ],
                 ],
             ],
+            'builder' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/builder',
+                    'defaults' => [
+                        'controller' => Controller\BuilderController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
             'account' => [
                 'type' => Literal::class,
                 'options' => [
@@ -50,18 +60,7 @@ return [
                             'defaults' => [ 'action' => 'post'],
                         ]
                     ],
-
                 ],
-            ],
-            'builder' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/builder',
-                    'defaults' => [
-                        'controller' => Controller\BuilderController::class,
-                        'action'     => 'index',
-                    ]
-                ]
             ],
             'login' => [
                 'type'    => Literal::class,
@@ -78,7 +77,7 @@ return [
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
-            Controller\BuilderController::class => InvokableFactory::class,
+            Controller\BuilderController::class => Factory\BuilderControllerFactory::class,
             Controller\AccountController::class => Factory\AccountControllerFactory::class,
             Controller\LoginController::class => InvokableFactory::class,
         ],

@@ -25,12 +25,12 @@ class AccountController extends AbstractActionController
             } catch (Exception $e) {
                 session_destroy();
                 header(self::LOGIN_HEADER);
-                die();
+                exit;
             }
         } else {
             $header_str = 'Location: /login';
             header(self::LOGIN_HEADER);
-            die();
+            exit;
         }
     }
 
@@ -47,9 +47,14 @@ class AccountController extends AbstractActionController
         try {
             if ($this->user->login($clean['email'], $clean['password'])) {
                 header(self::ACCOUNT_HEADER);
+                exit;
+            } else {
+                header(self::LOGIN_HEADER);
+                exit;
             }
         } catch (\Exception $e) {
             header(self::LOGIN_HEADER);
+            exit;
         }
 
     }
