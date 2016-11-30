@@ -103,16 +103,16 @@ return [
                     ],
                 ],
             ],
-//            'viewSurvey' => [
-//                'type'    => Segment::class,
-//                'options' => [
-//                    'route'    => '/survey/:surveyId',
-//                    'defaults' => [
-//                        'controller' => Controller\SurveyController::class,
-//                        'action'     => 'view',
-//                    ],
-//                ],
-//            ],
+            'survey' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/survey/:surveyId',
+                    'defaults' => [
+                        'controller' => Controller\SurveyController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
