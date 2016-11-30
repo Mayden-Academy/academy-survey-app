@@ -63,12 +63,10 @@ class AccountController extends AbstractActionController
 
         $clean = [];
 
-        if(empty($data['email']) && empty($data['password'])) {
-            if (empty($data)) {
-                throw new \Exception('$_POST is empty');
-            } else {
-                throw new \Exception('$_POST is missing email and password');
-            }
+        if(empty($data)) {
+            throw new \Exception('$_POST is empty');
+        } elseif (empty($data['email']) && empty($data['password'])) {
+            throw new \Exception('$_POST is missing email and password');
         }
 
         if (!empty($data['email'])) {
