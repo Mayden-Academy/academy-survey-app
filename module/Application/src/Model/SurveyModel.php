@@ -21,12 +21,22 @@ class SurveyModel
     public function save($survey) {
        $surveyId = $this->saveSurveyDetails($survey['survey_name'], $survey['user_id']);
 
-        foreach($survey['questions'] as $question) {
-           $questionId =  $this->saveQuestionDetails($question, $surveyId);
-            foreach($question['options'] as $option) {
-                $this->saveQuestionDetails($option, $questionId);
-            }
-        }
+         if (is_int($surveyId) && $surveyId > 0){
+             foreach($survey['questions'] as $question) {
+                 $questionId =  $this->saveQuestionDetails($question, $surveyId);
+                 if (is_int($questionId) && $questionId > 0){
+                     foreach($question['options'] as $option) {
+                         if(!$this->saveOptionDetails($option, $questionId)) {
+                             throw new \Exception('Option save failed');
+                         }
+                     }
+                 } else {
+                     throw new \Exception('Question save failed');
+                 }
+             }
+         } else {
+             throw new \Exception('Survey save failed');
+         }
 
         return true;
     }
