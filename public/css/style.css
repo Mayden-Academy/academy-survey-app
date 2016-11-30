@@ -47,6 +47,21 @@ div.container a.navbar-brand > img {
 }
 
 /* builder form */
+
+.new-question,
+.ui-state-highlight {
+    padding: 10px;
+}
+
+.new-question:hover {
+    cursor: move;
+    background-color: #f4f4f4;
+}
+
+.options {
+    margin-bottom: 10px;
+}
+
 #page-options {
     margin-top: 25px;
 }

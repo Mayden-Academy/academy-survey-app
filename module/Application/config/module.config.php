@@ -60,7 +60,6 @@ return [
                             'defaults' => [ 'action' => 'post'],
                         ]
                     ],
-
                 ],
             ],
             'login' => [
@@ -73,14 +72,25 @@ return [
                     ],
                 ],
             ],
+            'logout' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/logout',
+                    'defaults' => [
+                        'controller' => Controller\LogoutController::class,
+                        'action'     => 'logout',
+                    ],
+                ],
+            ]
         ],
     ],
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
-            Controller\BuilderController::class => InvokableFactory::class,
+            Controller\BuilderController::class => Factory\BuilderControllerFactory::class,
             Controller\AccountController::class => Factory\AccountControllerFactory::class,
-            Controller\LoginController::class => InvokableFactory::class,
+            Controller\LoginController::class => Factory\LoginControllerFactory::class,
+            Controller\LogoutController::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [
@@ -103,7 +113,7 @@ return [
     'service_manager' => [
         'factories' => [
             'pdo' => Factory\PdoFactory::class,
-            Model\User::class => Factory\UserFactory::class,
+            Model\UserModel::class => Factory\UserModelFactory::class,
         ],
     ],
 ];

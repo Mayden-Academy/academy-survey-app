@@ -1,17 +1,18 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: benmorris
- * Date: 29/11/2016
- * Time: 14:02
+ * User: academy
+ * Date: 30/11/2016
+ * Time: 11:00
  */
 
 namespace Application\Factory;
 
-class AccountControllerFactory
+
+class LoginControllerFactory
 {
     public function __invoke($sm) {
         $user = $sm->get(\Application\Model\UserModel::class);
-        return new \Application\Controller\AccountController($user);
+        return new \Application\Controller\LoginController($user);
     }
 }
