@@ -1,18 +1,30 @@
 $(function() {
 
-    var questionCount = $('#question-container').children().length //TODO recalculate this when we have an add button
+    var questionCount
     var $saveBtn = $('#submit-btn')
+    var surveyNameLength
 
-    // $saveBtn.prop("disabled", true)
+    $saveBtn.prop("disabled", true)
 
-    // $('#survey-name').keyup(function() {
-    //     validateSurvey($('#survey-name').val(), questionCount)
-    // })
+    $('#survey-name').keyup(function() {
+        surveyNameLength = $('#survey-name').val().length
+        validateSurvey(surveyNameLength, questionCount)
+    })
 
     $saveBtn.click(function() {
         var dog = getValues()
-        console.log(dog)
         ajaxSurvey(dog)
+    })
+
+    $('#add-question').click(function() {
+        // updating question count for validation
+        questionCount = $('#question-container .new-question').length
+        validateSurvey(surveyNameLength, questionCount)
+    })
+
+    $(document).on('click', '.remove-question' ,function() {
+        questionCount = $('#question-container .new-question').length
+        validateSurvey(surveyNameLength, questionCount)
     })
 
     function getValues() {
@@ -46,7 +58,7 @@ $(function() {
 
     function validateSurvey(surveyNameValue, questionCount)
     {
-        if(surveyNameValue.length >0 && surveyNameValue.length <= 255 && questionCount > 0)
+        if(surveyNameValue > 0 && surveyNameValue <= 255 && questionCount > 0)
         {
             $saveBtn.prop("disabled", false)
         }
@@ -56,17 +68,18 @@ $(function() {
         }
     }
 
-    function ajaxSurvey(survey) {
-        $.ajax({
-            method: "POST",
-            url: "/survey/create",
-            data: survey
-        })
-            .done(function() {
-                alert( "Data Saved");
-            });
-    }
 })
+
+function ajaxSurvey(survey) {
+    $.ajax({
+        method: "POST",
+        url: "/survey/create",
+        data: survey
+    })
+        .done(function() {
+            alert( "Data Saved");
+        });
+}
 
 
 //
