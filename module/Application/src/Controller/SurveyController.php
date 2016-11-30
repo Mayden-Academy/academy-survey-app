@@ -17,16 +17,19 @@ class SurveyController extends AbstractActionController
     /**
      * @var SurveyModel
      */
-    private $model;
+    private $surveyModel;
+    /**
+     * @var UserModel
+     */
     private $userModel;
 
     /**
      * SurveyController constructor.
-     * @param SurveyModel $model
+     * @param SurveyModel $surveyModel
      */
-    public function __construct(SurveyModel $model, UserModel $userModel)
+    public function __construct(SurveyModel $surveyModel, UserModel $userModel)
     {
-        $this->model = $model;
+        $this->surveyModel = $surveyModel;
         $this->userModel = $userModel;
     }
 
@@ -46,7 +49,12 @@ class SurveyController extends AbstractActionController
 
                 if ($this->validateData($data)) {
                     $data['user_id'] = $_SESSION['id'];
-                    $response = ['success' => $this->model->save($data)];
+                    $response = ['success' => $this->surveyModel->save($data)];
+
+                    if($response['success']) {
+                        $response['surveyId'] = $this->surveyModel->getSurveyId();
+                    }
+
                 } else {
                     $response['message'] = 'Missing required data';
                 }

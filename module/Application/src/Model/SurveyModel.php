@@ -11,7 +11,15 @@ namespace Application\Model;
 
 class SurveyModel
 {
+
+    /**
+     * @var the database connection
+     */
     private $pdo;
+    /**
+     * @var id for the survey once it has been saved
+     */
+    private $surveyId;
 
     /**
      * SurveyModel constructor.
@@ -30,28 +38,36 @@ class SurveyModel
      * @throws \Exception
      */
     public function save($survey) {
-       $surveyId = $this->saveSurveyDetails($survey['survey_name'], $survey['user_id']);
-         if (is_int($surveyId) && $surveyId > 0){
-             foreach($survey['questions'] as $question) {
-                 $options = $question['options'];
-                 unset($question['options']);
+        $this->surveyId = $this->saveSurveyDetails($survey['survey_name'], $survey['user_id']);
+        if (is_int($this->surveyId) && $this->surveyId > 0){
+            foreach($survey['questions'] as $question) {
+                $options = $question['options'];
+                unset($question['options']);
 
-                 $questionId =  $this->saveQuestionDetails($question, $surveyId);
-                 if (is_int($questionId) && $questionId > 0){
-                     foreach($options as $option) {
-                         if(!$this->saveOptionDetails($option, $questionId)) {
-                             throw new \Exception('Option save failed');
-                         }
-                     }
-                 } else {
-                     throw new \Exception('Question save failed');
-                 }
-             }
-         } else {
-             throw new \Exception('Survey save failed');
-         }
+                $questionId =  $this->saveQuestionDetails($question, $this->surveyId);
+                if (is_int($questionId) && $questionId > 0){
+                    foreach($options as $option) {
+                        if(!$this->saveOptionDetails($option, $questionId)) {
+                            throw new \Exception('Option save failed');
+                        }
+                    }
+                } else {
+                    throw new \Exception('Question save failed');
+                }
+            }
+        } else {
+            throw new \Exception('Survey save failed');
+        }
 
         return true;
+    }
+
+    /**
+     * @return INT id for the saved survey
+     */
+    public function getSurveyId()
+    {
+        return $this->surveyId;
     }
 
     /**
