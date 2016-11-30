@@ -109,7 +109,7 @@ $(function(){
                 required = 'yes'
             }
 
-            var options = $typeOptions.children('.input-group').children('input') //TODO change first children to .find(.imputgp input)
+            var options = $typeOptions.find('.input-group input')
             var optionsString = ''
 
             if(options.length)
