@@ -46,7 +46,7 @@ class User {
             $_SESSION['id'] = $this->id;
             $_SESSION['email'] = $email;
 
-            $sql = "UPDATE `user` SET `validationString` = :token WHERE `id` = " . $this->id . ";";
+            $sql = "UPDATE `user` SET `validation_string` = :token WHERE `id` = " . $this->id . ";";
             $query = $this->pdo->prepare($sql);
             return $query->execute([':token'=>$token]);
         } else {
@@ -107,7 +107,7 @@ class User {
         $query->execute([':id' => $id]);
         $user = $query->fetch(\PDO::FETCH_ASSOC);
 
-        if ($token != $user['validationString']) {
+        if ($token != $user['validation_string']) {
             throw new \Exception('error validating user');
         }
 
