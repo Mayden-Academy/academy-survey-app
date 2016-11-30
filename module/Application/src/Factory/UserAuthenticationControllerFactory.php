@@ -9,10 +9,10 @@
 namespace Application\Factory;
 
 
-class LoginControllerFactory
+class UserAuthenticationControllerFactory
 {
     public function __invoke($sm) {
         $user = $sm->get(\Application\Model\UserModel::class);
-        return new \Application\Controller\LoginController($user);
+        return new \Application\Controller\UserAuthenticationController($user);
     }
 }

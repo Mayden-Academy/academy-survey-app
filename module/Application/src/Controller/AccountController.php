@@ -34,7 +34,7 @@ class AccountController extends AbstractActionController
         }
     }
 
-    public function postAction() {
+    public function loginAction() {
 
         $clean = self::cleanData($this->params()->fromPost());
 

@@ -20,8 +20,8 @@ return [
                 'options' => [
                     'route'    => '/',
                     'defaults' => [
-                        'controller' => Controller\LoginController::class,
-                        'action'     => 'login',
+                        'controller' => Controller\UserAuthenticationController::class,
+                        'action'     => 'index',
                     ],
                 ],
             ],
@@ -47,7 +47,7 @@ return [
                         'type' => Method::class,
                         'options' => [
                             'verb' => 'post',
-                            'defaults' => [ 'action' => 'post'],
+                            'defaults' => [ 'action' => 'login'],
                         ]
                     ],
 
@@ -58,8 +58,8 @@ return [
                 'options' => [
                     'route'    => '/login',
                     'defaults' => [
-                        'controller' => Controller\LoginController::class,
-                        'action'     => 'login',
+                        'controller' => Controller\UserAuthenticationController::class,
+                        'action'     => 'index',
                     ],
                 ],
             ],
@@ -68,7 +68,7 @@ return [
                 'options' => [
                     'route'    => '/logout',
                     'defaults' => [
-                        'controller' => Controller\LogoutController::class,
+                        'controller' => Controller\UserAuthenticationController::class,
                         'action'     => 'logout',
                     ],
                 ],
@@ -79,8 +79,7 @@ return [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
             Controller\AccountController::class => Factory\AccountControllerFactory::class,
-            Controller\LoginController::class => Factory\LoginControllerFactory::class,
-            Controller\LogoutController::class => InvokableFactory::class,
+            Controller\UserAuthenticationController::class => Factory\UserAuthenticationControllerFactory::class,
         ],
     ],
     'view_manager' => [
@@ -94,7 +93,7 @@ return [
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
-            'application/login/login' => __DIR__ . '/../view/application/login/login.phtml',
+            'application/login/login' => __DIR__ . '/../view/application/user-authentication/login.phtml',
         ],
         'template_path_stack' => [
             __DIR__ . '/../view',
