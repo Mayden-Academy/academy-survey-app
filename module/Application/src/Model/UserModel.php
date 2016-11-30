@@ -5,7 +5,6 @@ class UserModel {
 
     private $id;
     private $email;
-    private $salt;
     private $pdo;
 
     /**
@@ -89,7 +88,6 @@ class UserModel {
             $this->setUserDetails($user);
             return true;
         }
-
     }
 
     /**
@@ -117,9 +115,12 @@ class UserModel {
 
     public function setUserDetails($user){
         //set details
-        $this->id = $user['id'];
-        $this->email = $user['email'];
-        $this->salt = $user['salt'];
-        return true;
+        if(is_array($user)) {
+            if (!empty($user['id']) && !empty($user['email'])) {
+                return ($this->id = $user['id'] && $this->email = $user['email']);
+            }
+            return false;
+        }
+        throw new \Exception('incorrect data type passed, array is required');
     }
 }
