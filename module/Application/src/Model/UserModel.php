@@ -1,11 +1,10 @@
 <?php
 namespace Application\Model;
 
-class User {
+class UserModel {
 
     private $id;
     private $email;
-    private $salt;
     private $pdo;
 
     /**
@@ -46,7 +45,7 @@ class User {
             $_SESSION['id'] = $this->id;
             $_SESSION['email'] = $email;
 
-            $sql = "UPDATE `user` SET `validationString` = :token WHERE `id` = " . $this->id . ";";
+            $sql = "UPDATE `user` SET `validation_string` = :token WHERE `id` = " . $this->id . ";";
             $query = $this->pdo->prepare($sql);
             return $query->execute([':token'=>$token]);
         } else {
@@ -89,7 +88,6 @@ class User {
             $this->setUserDetails($user);
             return true;
         }
-
     }
 
     /**
@@ -107,7 +105,7 @@ class User {
         $query->execute([':id' => $id]);
         $user = $query->fetch(\PDO::FETCH_ASSOC);
 
-        if ($token != $user['validationString']) {
+        if ($token != $user['validation_string']) {
             throw new \Exception('error validating user');
         }
 
@@ -117,9 +115,12 @@ class User {
 
     public function setUserDetails($user){
         //set details
-        $this->id = $user['id'];
-        $this->email = $user['email'];
-        $this->salt = $user['salt'];
-        return true;
+        if(is_array($user)) {
+            if (!empty($user['id']) && !empty($user['email'])) {
+                return ($this->id = $user['id'] && $this->email = $user['email']);
+            }
+            return false;
+        }
+        throw new \Exception('incorrect data type passed, array is required');
     }
 }

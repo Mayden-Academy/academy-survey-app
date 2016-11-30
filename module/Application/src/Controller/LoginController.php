@@ -14,7 +14,27 @@ use Zend\View\Model\ViewModel;
 
 class LoginController extends AbstractActionController
 {
+    private $user;
+    const ACCOUNT_HEADER = 'Location: /account';
+
+    public function __construct($user)
+    {
+        $this->user = $user;
+    }
+
     public function loginAction() {
-        return new ViewModel();
+        if(!empty($_SESSION['userAuth'])) {
+            if($this->user->validateToken($_SESSION['userAuth'], $_SESSION['id']))
+            {
+                header(self::ACCOUNT_HEADER);
+                exit;
+            }  else {
+                session_destroy();
+                header(self::LOGIN_HEADER);
+                exit;
+            }
+        } else {
+            return new ViewModel();
+        }
     }
 }

@@ -54,40 +54,41 @@ $(function(){
 
             var $question = $('#question')
             var $type = $('#input-selector')
-            var $required = $('#required');
+            var $required = $('#required')
 
-            var required = 'no'
-            if($required.is(':checked'))
-            {
-                required = 'yes'
-            }
-
+            var question = $question.val()
+            var type = $type.val().slice(0, $type.val().length - 6)
             var options = $typeOptions.children('.input-group').children('input')
-            var optionsString = ''
+            var response = '<div class="options">'
 
-            if(options.length)
-            {
-                optionsString = '<br><b>Options:</b> '
-                options.each(function(key,option)
-                {
-                    optionsString += option.value + ', '
-                })
-                optionsString = optionsString.substr(0,optionsString.length - 2)
+            if($required.is(':checked')){
+                question += ' *'
             }
 
-            //ui-state-default makes sortable
-            var div =   '<div class="new-question ui-state-default">' +
-                            '<b>Question:</b> ' + $question.val() +
-                            '<br>' +
-                            '<b>Type:</b> ' + $type.val() +
-                            '<br>' +
-                            '<b>Required:</b> ' + required +
-                            optionsString +
+            if(type == 'text') {
+                response += '<input type="text" disabled ><br>'
+            } else {
+                if(options.length)
+                {
+                    options.each(function(key,option)
+                    {
+                        response += '<input type="' + type + '" disabled value="' + option.value + '"> ' + option.value + '<br>'
+                    })
+                }
+            }
+
+            response += '</div>'
+
+            var newQuestion =   '<div class="new-question ui-state-default">' +
+                            '<h5>' + question + '</h5>' +
+                            response +
                             '<br>' +
                             '<input type="submit" class="remove-question btn btn-sm" value="Remove">' +
                         '</div>'
+            
+            var $newQuestion = $(newQuestion).data('required', $required.is(':checked'))
 
-            $questionContainer.append(div)
+            $questionContainer.append($newQuestion)
 
             $questionContainer.sortable(
                 {
