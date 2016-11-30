@@ -1,48 +1,45 @@
 $(function() {
 
-    var questionCount = $('#question-container').children().length //TODO recalculate this when we have an add button
+    var questionCount = $('#question-container').children().length
     var $saveBtn = $('#submit-btn')
 
-    // $saveBtn.prop("disabled", true)
+    $saveBtn.prop("disabled", true)
 
-    // $('#survey-name').keyup(function() {
-    //     validateSurvey($('#survey-name').val(), questionCount)
-    // })
+    $('#survey-name').keyup(function() {
+        validateSurvey($('#survey-name').val(), questionCount)
+    })
 
     $saveBtn.click(function() {
-        var dog = getValues()
-        console.log(dog)
-        ajaxSurvey(dog)
+        var surveyObject = getValues()
+        ajaxSurvey(surveyObject)
     })
 
     function getValues() {
-        // var $survey_name = $('#survey-name').val()
-        // foreach $child_of #question-container
-            // var question = [
-        // {
-        //     "question_order": 1,
-        //     "question_text": $('label').val(),
-        //     "question_type": 2,
-        //     "required": "true",
-        //     "options": [
-        //     "male", "female"
-        // ]
+        var questions = []
+        $('.new-question').each(function(key, value) {
+            var questionOrder = key + 1
+            var questionText = $('h5', this).text()
+            var questionType = $('.options input', this).attr('type')
+            var required = $(this).data('required')
+            var options = []
+            if (questionType != 'text') {
+                $('.options input', this).each(function() {
+                    options.push($(this).val())
+                })
+            }
+            questions.push({
+                "question_order" : questionOrder,
+                    "question_text" : questionText,
+                    "question_type" : questionType,
+                    "required" : required,
+                    "options" : options
+            })
+        })
         var survey = {
             "survey_name": $('#survey-name').val(),
-            "user_id": 1,
-            "questions": [
-                {
-                    "question_order" : 1,
-                    "question_text" : "what is your gender?",
-                    "question_type" : 2,
-                    "required" : "true",
-                    "options" : [
-                        "male", "female"
-                    ]
-                }
-        ]}
+            "questions": questions}
         return survey;
-    }
+        }
 
     function validateSurvey(surveyNameValue, questionCount)
     {
@@ -64,31 +61,6 @@ $(function() {
         })
             .done(function() {
                 alert( "Data Saved");
-            });
+            })
     }
 })
-
-
-//
-// "survey_name" : "Name",
-//     "user_id" : 1,
-//     "questions" : [
-//     {
-//         "question_text" : "what is your gender?",
-//         "question_type" : 2,
-//         "required" : "true",
-//         "options" : [
-//             "male", "female"
-//         ]
-//     }...
-// ]
-
-// for (i = 1; i < question_Count; i++) {
-//     question_order = i
-    //do stuff
-    // question_text = $('#question-container div label').eq(i - 1).text()
-    // question_type = $('.new-question')[i - 1].childNodes[4]
-    // "required" = $('.new-question')[i - 1].childNodes[7],
-        //     if $('.new-question')[0].childNodes[9] != options
-
-
