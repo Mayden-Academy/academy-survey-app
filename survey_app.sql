@@ -7,7 +7,7 @@
 #
 # Host: 192.168.20.56 (MySQL 5.6.33)
 # Database: survey_app
-# Generation Time: 2016-11-29 14:34:20 +0000
+# Generation Time: 2016-11-30 09:56:44 +0000
 # ************************************************************
 
 
@@ -48,6 +48,7 @@ CREATE TABLE `question` (
   `type` int(11) unsigned NOT NULL COMMENT 'Linked to question_type table id.',
   `survey_id` int(11) unsigned NOT NULL COMMENT 'Linked to survey table id.',
   `required` tinyint(1) unsigned NOT NULL COMMENT 'Yes or no. 1 or 0.',
+  `order` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `survey_id` (`survey_id`),
   KEY `type` (`type`),
