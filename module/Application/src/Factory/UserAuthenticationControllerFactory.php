@@ -7,12 +7,13 @@
  */
 
 namespace Application\Factory;
-
+use Application\Model\UserModel;
+use Application\Controller\UserAuthenticationController;
 
 class UserAuthenticationControllerFactory
 {
     public function __invoke($sm) {
-        $user = $sm->get(\Application\Model\UserModel::class);
-        return new \Application\Controller\UserAuthenticationController($user);
+        $userModel = $sm->get(UserModel::class);
+        return new UserAuthenticationController($userModel);
     }
 }
