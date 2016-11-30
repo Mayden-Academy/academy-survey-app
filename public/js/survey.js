@@ -3,6 +3,7 @@ $(function() {
     var questionCount
     var $saveBtn = $('#submit-btn')
     var surveyNameLength
+    var surveyId
 
     $saveBtn.prop("disabled", true)
 
@@ -12,8 +13,8 @@ $(function() {
     })
 
     $saveBtn.click(function() {
-        var surveyObject = getValues()
-        ajaxSurvey(surveyObject)
+        var survey = getValues()
+        ajaxSurvey(survey)
     })
 
     $('#add-question').click(function() {
@@ -65,16 +66,19 @@ $(function() {
             $saveBtn.prop("disabled", true)
         }
     }
+
+    function ajaxSurvey(survey, surveyId) {
+        $.ajax({
+            method: "POST",
+            url: "/survey/create",
+            data: survey,
+            success: function(response) {
+                surveyId = response['surveyId']
+                alert( "Data Saved")
+            }
+        })
+    }
 })
 
-function ajaxSurvey(survey) {
-    $.ajax({
-        method: "POST",
-        url: "/survey/create",
-        data: survey
-    })
-        .done(function() {
-            alert( "Data Saved");
-        });
-}
+
 
