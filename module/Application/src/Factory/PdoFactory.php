@@ -16,7 +16,8 @@ class PdoFactory
         $password = "";
         try {
             $pdo = new \PDO("mysql:dbname=$dbname;host=$servername", $username, $password);
-        } catch(Exception $e) {
+            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        } catch(\Exception $e) {
             echo 'Connection failed: ' . $e->getMessage();
         }
 
