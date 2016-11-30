@@ -19,7 +19,24 @@ class SurveyModel
     }
 
     public function save($survey) {
-        //TODO save survey
+        $this->saveSurveyDetails($survey['survey_name'], $survey['user_id']);
         return true;
+    }
+
+    public function saveSurveyDetails($surveyName, $userId) {
+        $sql = "INSERT INTO `survey` (`name`, `creator`) VALUES (?, ?);";
+        $query = $this->pdo->prepare($sql);
+        if ($query->execute([$surveyName, $userId])) {
+            return PDO::lastInsertId();
+        }
+        return false;
+    }
+
+    public function saveQuestionDetails() {
+
+    }
+
+    public function saveOptionDetails() {
+
     }
 }
