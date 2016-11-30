@@ -22,7 +22,10 @@ class SurveyModel
        $surveyId = $this->saveSurveyDetails($survey['survey_name'], $survey['user_id']);
 
         foreach($survey['questions'] as $question) {
-            $this->saveQuestionDetails($question, $surveyId);
+           $questionId =  $this->saveQuestionDetails($question, $surveyId);
+            foreach($question['options'] as $option) {
+                $this->saveQuestionDetails($option, $questionId);
+            }
         }
 
         return true;
@@ -47,7 +50,10 @@ class SurveyModel
         return false;
     }
 
-    public function saveOptionDetails() {
-
+    public function saveOptionDetails($displayValue, $questionId ) {
+        $sql = "INSERT INTO `option` (question_id`, `display_value`) VALUES (?, ?);";
+        $query = $this->pdo->prepare($sql);
+        $optionDetails['question_id'] = $questionId;
+        return $query->execute([$questionId, $displayValue]);
     }
 }
