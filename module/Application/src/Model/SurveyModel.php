@@ -19,7 +19,12 @@ class SurveyModel
     }
 
     public function save($survey) {
-        $this->saveSurveyDetails($survey['survey_name'], $survey['user_id']);
+       $surveyId = $this->saveSurveyDetails($survey['survey_name'], $survey['user_id']);
+
+        foreach($survey['questions'] as $question) {
+            $this->saveQuestionDetails($question, $surveyId);
+        }
+
         return true;
     }
 
@@ -32,8 +37,14 @@ class SurveyModel
         return false;
     }
 
-    public function saveQuestionDetails() {
-
+    public function saveQuestionDetails($questionDetails, $surveyId) {
+        $sql = "INSERT INTO `question` (`text`, `type`, `survey_id`, `required`, `order`) VALUES (:question_text, :question_type, :survey_id, :required, :question_order);";
+        $query = $this->pdo->prepare($sql);
+        $questionDetails['survey_id'] = $surveyId;
+        if ($query->execute($questionDetails)) {
+            return PDO::lastInsertId();
+        }
+        return false;
     }
 
     public function saveOptionDetails() {
