@@ -70,7 +70,6 @@ $(function(){
             } else {
                 if(options.length)
                 {
-                    response += '<b>Options:</b><br>'
                     options.each(function(key,option)
                     {
                         response += '<input type="' + type + '" disabled value="' + option.value + '"> ' + option.value + '<br>'
