@@ -79,7 +79,7 @@ return [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
             Controller\AccountController::class => Factory\AccountControllerFactory::class,
-            Controller\LoginController::class => InvokableFactory::class,
+            Controller\LoginController::class => Factory\LoginControllerFactory::class,
             Controller\LogoutController::class => InvokableFactory::class,
         ],
     ],
