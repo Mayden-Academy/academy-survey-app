@@ -12,8 +12,29 @@ use Zend\View\Model\ViewModel;
 
 class BuilderController extends AbstractActionController
 {
+    private $user;
+    const LOGIN_HEADER = 'Location: /login';
+
+    public function __construct($user)
+    {
+        $this->user = $user;
+    }
+
     public function indexAction()
     {
-        return new ViewModel();
+        if(!empty($_SESSION['userAuth'])) {
+            try {
+                $this->user->validateToken($_SESSION['userAuth'], $_SESSION['id']);
+                return new ViewModel();
+            } catch (Exception $e) {
+                session_destroy();
+                header(self::LOGIN_HEADER);
+                exit;
+            }
+        } else {
+            $header_str = 'Location: /login';
+            header(self::LOGIN_HEADER);
+            exit;
+        }
     }
 }

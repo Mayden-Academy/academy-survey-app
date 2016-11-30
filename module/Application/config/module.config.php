@@ -77,7 +77,7 @@ return [
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
-            Controller\BuilderController::class => InvokableFactory::class,
+            Controller\BuilderController::class => Factory\BuilderControllerFactory::class,
             Controller\AccountController::class => Factory\AccountControllerFactory::class,
             Controller\LoginController::class => InvokableFactory::class,
         ],
