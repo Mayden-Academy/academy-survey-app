@@ -72,6 +72,27 @@ return [
                     ],
                 ],
             ],
+            'surveySave' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/survey/create',
+                    'defaults' => [
+                        'controller' => Controller\SurveyController::class,
+                        'action'     => 'create',
+                    ],
+                ],
+                'may_terminate' => false,
+                'child_routes' => [
+                    'post' => [
+                        'type' => Method::class,
+                        'options' => [
+                            'verb' => 'post',
+                            'defaults' => [ 'action' => 'create'],
+                        ]
+                    ],
+
+                ],
+            ],
             'logout' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -89,6 +110,7 @@ return [
             Controller\IndexController::class => InvokableFactory::class,
             Controller\BuilderController::class => Factory\BuilderControllerFactory::class,
             Controller\AccountController::class => Factory\AccountControllerFactory::class,
+            Controller\SurveyController::class => Factory\SurveyControllerFactory::class,
             Controller\LoginController::class => Factory\LoginControllerFactory::class,
             Controller\LogoutController::class => InvokableFactory::class,
         ],
@@ -109,10 +131,14 @@ return [
         'template_path_stack' => [
             __DIR__ . '/../view',
         ],
+        'strategies' => [
+            'ViewJsonStrategy'
+        ],
     ],
     'service_manager' => [
         'factories' => [
             'pdo' => Factory\PdoFactory::class,
+            Model\SurveyModel::class => Factory\SurveyModelFactory::class,
             Model\UserModel::class => Factory\UserModelFactory::class,
         ],
     ],
