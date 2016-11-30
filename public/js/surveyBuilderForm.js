@@ -79,14 +79,16 @@ $(function(){
 
             response += '</div>'
 
-            var div =   '<div class="new-question ui-state-default">' +
+            var newQuestion =   '<div class="new-question ui-state-default">' +
                             '<h5>' + question + '</h5>' +
                             response +
                             '<br>' +
                             '<input type="submit" class="remove-question btn btn-sm" value="Remove">' +
                         '</div>'
+            
+            var $newQuestion = $(newQuestion).data('required', $required.is(':checked'))
 
-            $questionContainer.append(div)
+            $questionContainer.append($newQuestion)
 
             $questionContainer.sortable(
                 {
