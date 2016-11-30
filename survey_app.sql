@@ -107,9 +107,19 @@ CREATE TABLE `user` (
   `email` varchar(255) NOT NULL DEFAULT '',
   `password` varchar(255) NOT NULL DEFAULT '',
   `salt` varchar(255) NOT NULL DEFAULT '',
+  `validation_string` varchar(40) DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+
+INSERT INTO `user` (`id`, `email`, `password`, `salt`, `validation_string`)
+VALUES
+	(1,'example@email.com','c6adb2d288788e13b78c768c3f71d6cee793f0ce','1234','');
+
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 
