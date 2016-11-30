@@ -47,7 +47,7 @@ class SurveyController extends AbstractActionController
             try {
                 $this->userModel->validateToken($_SESSION['userAuth'], $_SESSION['id']);
 
-                if ($this->validateData($data)) {
+                if (self::validateData($data)) {
                     $data['user_id'] = $_SESSION['id'];
                     $response = ['success' => $this->surveyModel->save($data)];
 
@@ -75,7 +75,7 @@ class SurveyController extends AbstractActionController
      * @param $data data that is being inputted
      * @return bool if all data is present or not
      */
-    private function validateData($data) {
+    static public function validateData($data) {
         if (
             !empty($data['survey_name']) &&
             !empty($data['questions']) &&
@@ -87,6 +87,7 @@ class SurveyController extends AbstractActionController
                     !empty($question['question_text']) &&
                     !empty($question['question_type']) &&
                     !empty($question['required']) &&
+                    !empty($question['options']) &&
                     is_array($question['options']) &&
                     count($question['options']) > 0
                 ) {
