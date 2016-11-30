@@ -47,6 +47,12 @@ div.container a.navbar-brand > img {
 }
 
 /* builder form */
+
+.new-question,
+.ui-state-highlight {
+    margin-top: 20px;
+}
+
 #page-options {
     margin-top: 25px;
 }
