@@ -20,8 +20,8 @@ return [
                 'options' => [
                     'route'    => '/',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'index',
+                        'controller' => Controller\LoginController::class,
+                        'action'     => 'login',
                     ],
                 ],
             ],
