@@ -41,9 +41,9 @@ div.container a.navbar-brand > img {
 }
 
 .ui-state-highlight {
-    height: 2px;
+    height: 100px;
     width: 100%;
-    background-color: #000000;
+    background-color: #e8e8e8;
 }
 
 /* builder form */
