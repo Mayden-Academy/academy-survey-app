@@ -11,7 +11,8 @@ namespace Application\Factory;
 class SurveyControllerFactory
 {
     public function __invoke($sm) {
-        $model = $sm->get(\Application\Model\SurveyModel::class);
-        return new \Application\Controller\SurveyController($model);
+        $userModel = $sm->get(\Application\Model\UserModel::class);
+        $surveyModel = $sm->get(\Application\Model\SurveyModel::class);
+        return new \Application\Controller\SurveyController($surveyModel, $userModel);
     }
 }

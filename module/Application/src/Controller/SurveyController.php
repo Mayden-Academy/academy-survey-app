@@ -7,6 +7,7 @@
 
 namespace Application\Controller;
 
+use Application\Model\UserModel;
 use Zend\Mvc\Controller\AbstractActionController;
 use Application\Model\SurveyModel;
 use Zend\View\Model\JsonModel;
@@ -17,14 +18,16 @@ class SurveyController extends AbstractActionController
      * @var SurveyModel
      */
     private $model;
+    private $userModel;
 
     /**
      * SurveyController constructor.
      * @param SurveyModel $model
      */
-    public function __construct(SurveyModel $model)
+    public function __construct(SurveyModel $model, UserModel $userModel)
     {
         $this->model = $model;
+        $this->userModel = $userModel;
     }
 
     /**
@@ -35,11 +38,24 @@ class SurveyController extends AbstractActionController
     public function createAction()
     {
         $data = $this->params()->fromPost();
-        if ($this->validateData($data)) {
-            // set user_id
-            $response = ['success' => $this->model->save($data)];
+        $response = ['success' => false];
+
+        if(!empty($_SESSION['userAuth'])) {
+            try {
+                $this->userModel->validateToken($_SESSION['userAuth'], $_SESSION['id']);
+
+                if ($this->validateData($data)) {
+                    $data['user_id'] = $_SESSION['id'];
+                    $response = ['success' => $this->model->save($data)];
+                } else {
+                    $response['message'] = 'Missing required data';
+                }
+            } catch (Exception $e) {
+                session_destroy();
+                $response['message'] = 'Invalid user token';
+            }
         } else {
-            $response = ['success' => false, 'message' => 'Missing required data'];
+            $response['message'] = 'User not logged in';
         }
 
         return new JsonModel($response);
