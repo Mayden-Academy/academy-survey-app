@@ -2,10 +2,12 @@
 
 namespace Application\Factory;
 
+use \Application\Controller\BuilderController;
+
 class BuilderControllerFactory
 {
     public function __invoke($sm) {
-        $user = $sm->get(\Application\Model\UserModel::class);
-        return new \Application\Controller\BuilderController($user);
+        $userModel = $sm->get(\Application\Model\UserModel::class);
+        return new BuilderController($userModel);
     }
 }
