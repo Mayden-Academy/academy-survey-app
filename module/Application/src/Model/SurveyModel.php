@@ -63,7 +63,7 @@ class SurveyModel
         $sql = "INSERT INTO `survey` (`name`, `creator`) VALUES (?, ?);";
         $query = $this->pdo->prepare($sql);
         if ($query->execute([$surveyName, $userId])) {
-            return PDO::lastInsertId();
+            return $this->pdo->lastInsertId();
         }
         return false;
     }
@@ -80,7 +80,7 @@ class SurveyModel
         $query = $this->pdo->prepare($sql);
         $questionDetails['survey_id'] = $surveyId;
         if ($query->execute($questionDetails)) {
-            return PDO::lastInsertId();
+            return $this->pdo->lastInsertId();
         }
         return false;
     }
