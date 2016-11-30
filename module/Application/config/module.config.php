@@ -104,6 +104,7 @@ return [
         'factories' => [
             'pdo' => Factory\PdoFactory::class,
             Model\User::class => Factory\UserFactory::class,
+            Model\SurveyModel::class => Factory\SurveyModelFactory::class,
         ],
     ],
 ];

@@ -11,6 +11,13 @@ namespace Application\Model;
 
 class SurveyModel
 {
+    private $pdo;
+
+    public function __construct($pdo)
+    {
+        $this->pdo = $pdo;
+    }
+
     public function save($survey) {
         //TODO save survey
         return true;
