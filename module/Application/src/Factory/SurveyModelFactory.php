@@ -8,11 +8,13 @@
 
 namespace Application\Factory;
 
+use \Application\Model\SurveyModel;
+
 class SurveyModelFactory
 {
     public function __invoke($sm)
     {
         $pdo = $sm->get('pdo');
-        return new \Application\Model\SurveyModel($pdo);
+        return new SurveyModel($pdo);
     }
 }
