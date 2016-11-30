@@ -11,7 +11,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 
 class SurveyController extends AbstractActionController
 {
-    public function indexAction($data)
+    public function indexAction()
     {
         //decode JSON($data) and manipulate to fit the PDO insert
         //validation and return for model
