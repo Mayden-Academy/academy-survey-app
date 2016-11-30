@@ -39,3 +39,29 @@ div.container a.navbar-brand > img {
 #survey-name {
     width: 100%;
 }
+
+.ui-state-highlight {
+    height: 100px;
+    width: 100%;
+    background-color: #e8e8e8;
+}
+
+/* builder form */
+#page-options {
+    margin-top: 25px;
+}
+
+#question,
+.question-text {
+    width: 300px;
+    margin-bottom: 10px;
+}
+
+#input-selector {
+    margin-right: 10px;
+}
+
+#add-question {
+    margin-top: 10px;
+    display: block;
+}

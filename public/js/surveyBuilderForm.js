@@ -1,15 +1,16 @@
 $(function(){
-    var button = $('#add-question')
-    button.prop("disabled",true)
+    var addQuestionButton = $('#add-question')
 
-    $('.question-adder #input-selector').change(function()
+    addQuestionButton.prop("disabled",true)
+
+    $('#input-selector').change(function()
     {
-        $('#question-options').remove()
-        if ($('#input-selector').val() !== 'text-input')
+        if ($('#input-selector').val() !== 'text-input' && $('#question-options').length < 1)
         {
-            $('.question-adder').append(
+            $('#input-container').append(
                 '<div id="question-options" class="input-group">' +
-                '<h4>Options:</h4>' +
+                '<label for="option-text">Options:</label>' +
+                '<br>' +
                 '<input type="text" id="option-text">' +
                 '<button class="btn input-group-addon" id="add-option">+</button>' +
                 '</div>'
@@ -29,36 +30,82 @@ $(function(){
                     $optionInput.val('')
                     $('.remove-option').click(function(){
                         $(this).parent('div').remove()
+                        validateNewQuestion($('#question').val(), addQuestionButton, $('#input-selector').val())
                     })
                 }
+
+                validateNewQuestion($('#question').val(), addQuestionButton, $('#input-selector').val())
             })
+        } else if($('#input-selector').val() == 'text-input') {
+            $('#question-options').remove()
         }
+        validateNewQuestion($('#question').val(), addQuestionButton, $('#input-selector').val())
     })
 
     $('#question').keyup(function(e)
     {
-        validateNewQuestion($('#question').val(), button)
+        validateNewQuestion($('#question').val(), addQuestionButton, $('#input-selector').val())
     })
 
-    button.click(function(e)
+    addQuestionButton.click(function(e)
         {
-            var question = $('#question').val()
-            var type = $('#input-selector').val()
+            var $questionContainer = $('#question-container')
+            var $typeOptions = $('#question-options')
+
+            var $question = $('#question')
+            var $type = $('#input-selector')
+            var $required = $('#required');
 
             var required = 'no'
-            if($('#required').is(':checked')){
+            if($required.is(':checked'))
+            {
                 required = 'yes'
             }
 
-            var div =   '<div class="new-question">' +
-                        'question: ' + question +
-                        '<br>' +
-                        'type: ' + type +
-                        ' required: ' + required +
-                    '</div>'
+            var options = $typeOptions.children('.input-group').children('input')
+            var optionsString = ''
 
-            $('#survey-section').append(div)
+            if(options.length)
+            {
+                optionsString = '<br><b>Options:</b> '
+                options.each(function(key,option)
+                {
+                    optionsString += option.value + ', '
+                })
+                optionsString = optionsString.substr(0,optionsString.length - 2)
+            }
 
+            //ui-state-default makes sortable
+            var div =   '<div class="new-question ui-state-default">' +
+                            '<b>Question:</b> ' + $question.val() +
+                            '<br>' +
+                            '<b>Type:</b> ' + $type.val() +
+                            '<br>' +
+                            '<b>Required:</b> ' + required +
+                            optionsString +
+                            '<br>' +
+                            '<input type="submit" class="remove-question btn btn-sm" value="Remove">' +
+                        '</div>'
+
+            $questionContainer.append(div)
+
+            $questionContainer.sortable(
+                {
+                    placeholder: "ui-state-highlight"
+                }
+            )
+
+            $('.remove-question').click(function()
+            {
+                $(this).parent('.new-question').remove()
+            })
+
+            //resetting form
+            $question.val('')
+            $type.val('text-input')
+            $required.prop('checked', false)
+            $typeOptions.remove()
+            addQuestionButton.prop("disabled",true)
         }
     )
 })
@@ -70,17 +117,21 @@ $(function(){
  * @param STRING question text in question's text box
  * @param JQUERYSELECTOR button to be enabled
  */
- function validateNewQuestion (question, button)
- {
-    if(question.length >= 10 && question.length <= 255)
-    {
-        button.prop("disabled",false)
+ function validateNewQuestion (questionText, $button, questionType)
+{
+    if (
+        (
+            ((questionType == 'radio-input') && ($('.remove-option').length >= 2)) ||
+            ((questionType == 'checkbox-input') && ($('.remove-option').length >= 1)) ||
+            (questionType == 'text-input')
+        ) &&
+        questionText.length >= 10 &&
+        questionText.length <= 255
+    ) {
+        $button.prop("disabled",false)
     }
     else
     {
-        button.prop("disabled",true)
+        $button.prop("disabled",true)
     }
-
-    //TODO Add validation for radio options
-    //TODO Add validation for checkbox options
 }
