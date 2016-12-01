@@ -1,3 +1,41 @@
 <div class="container">
+    <h1><?= $survey['name'] ?></h1>
+
+        <form method="post">
+
+        <?php
+        //just echoing html output so dont need view helper?
+        foreach($survey['questions'] as $question){
+
+            $text = $question['text'];
+            if($question['required'] == 'true')     //convert to bool?
+            {
+                $text .= ' *';
+            }
+
+            echo    '<div class="question">' .
+                '<h5>' . $text . '</h5>';
+
+            if($question['type'] == 'text')
+            {
+                echo '<input type="text" name="' . $question['id'] . '">';     //id = question id?
+            } else
+            {
+                foreach ($question['options'] as $value)
+                {
+                    echo    '<div>' . '<input ' .
+                                'type="'. $question['type'] . '"' .
+                                'value="' . $value['display_value'] . '"' .
+                                'name="' . $question['id'] . '"> ' .
+                                $value['display_value'] .
+                            '</div>';
+                }
+            }
+            echo    '</div>';
+        }
+
+        ?>
+        <input class="btn btn-success" type="submit" value="Submit">
+        </form>
 
 </div>
