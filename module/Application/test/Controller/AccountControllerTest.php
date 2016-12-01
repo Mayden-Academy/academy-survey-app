@@ -6,24 +6,32 @@ include __DIR__ . '/../../../../vendor/autoload.php';
 
 class AccountControllerTest extends TestCase
 {
-    public function testSuccessfulCleanData() {
+    public function testCleanDataAlreadyCleanGood() {
         $loginDetails = ['email' => 'example@email.com', 'password' => 'password'];
 
         $clean = AccountController::cleanData($loginDetails);
 
-        $this->assertEquals($clean['email'], filter_var('example@email.com', FILTER_SANITIZE_EMAIL));
-        $this->assertEquals($clean['password'], filter_var('password', FILTER_SANITIZE_STRING));
+        $this->assertEquals($clean, $loginDetails);
     }
 
-    public function testPostContainsAdditionalArrayValuesCleanData() {
+    public function testCleanDataDirtyDataGood() {
+        $loginDetails = ['email' => 'exa(mple)@em//ail.com', 'password' => '<p>password</p>'];
+
+        $clean = AccountController::cleanData($loginDetails);
+
+        $this->assertEquals($clean, ['email' => 'example@email.com', 'password' => 'password']);
+    }
+
+    public function testCleanDataPostContainsAdditionalArrayValuesGood() {
         $loginDetails = ['email' => 'example@email.com', 'password' => 'password', 'extra' => 'placeholder'];
 
         $clean = AccountController::cleanData($loginDetails);
 
-        $this->assertEquals(count($clean), 2);
+        $this->assertArrayHasKey('email', $clean);
+        $this->assertArrayHasKey('password', $clean);
     }
 
-    public function testMissingEmailCleanData() {
+    public function testCleanDataMissingEmailBad() {
         $loginDetails = ['password' => 'password'];
 
         try{
@@ -33,7 +41,7 @@ class AccountControllerTest extends TestCase
         }
     }
 
-    public function testMissingPasswordCleanData() {
+    public function testCleanDataMissingPasswordBad() {
         $loginDetails = ['email' => 'example@email.com'];
 
         try{
@@ -43,7 +51,7 @@ class AccountControllerTest extends TestCase
         }
     }
 
-    public function testMissingEmailAndPasswordCleanData() {
+    public function testCleanDataMissingEmailAndPasswordBad() {
         $loginDetails = ['extra' => 'placeholder'];
 
         try{
@@ -53,13 +61,23 @@ class AccountControllerTest extends TestCase
         }
     }
 
-    public function testEmptyPostCleanData() {
+    public function testCleanDataEmptyPostBad() {
         $loginDetails = [];
 
         try{
             $clean = AccountController::cleanData($loginDetails);
         } catch (Exception $e) {
             $this->assertEquals($e->getMessage(), '$_POST is empty');
+        }
+    }
+
+    public function testCleanDataMalformed() {
+        $loginDetails = 1;
+
+        try{
+            $clean = AccountController::cleanData($loginDetails);
+        } catch (Exception $e) {
+            $this->assertEquals($e->getMessage(), 'Incorrect data type, expecting array');
         }
     }
 }

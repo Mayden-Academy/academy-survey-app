@@ -49,7 +49,7 @@ class AccountController extends AbstractActionController
 
         try {
             if ($this->userModel->login($clean['email'], $clean['password'])) {
-                return $this->redirect()->toRoute('account/post',
+                return $this->redirect()->toRoute('account/get',
                     ['controller'=>AccountController::class,
                         'action' => 'login',
                         'params' =>'hello']);
@@ -71,6 +71,10 @@ class AccountController extends AbstractActionController
     static public function cleanData($data) {
 
         $clean = [];
+
+        if(!is_array($data)) {
+            throw new \Exception('Incorrect data type, expecting array');
+        }
 
         if(empty($data)) {
             throw new \Exception('$_POST is empty');
