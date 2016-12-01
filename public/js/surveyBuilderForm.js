@@ -24,17 +24,7 @@ $(function() {
     })
 
     $addQuestionButton.click(function(e) {
-        addQuestion($type)
-    })
 
-
-//_________________________________FUNCTION DEFINITIONS__________________________________________
-    //TODO: DocBlock me please :)
-    /**
-     *
-     * @param $type
-     */
-    function addQuestion($type) {
         var $questionContainer = $('#question-container')
         var $typeOptions = $('#question-options')
         var $question = $('#question')
@@ -62,11 +52,11 @@ $(function() {
         response += '</div>'
 
 
-            var newQuestion =   '<div class="new-question ui-state-default">' +
-                                '<h5>' + question + '</h5>' +
-                                response +
-                                '<input type="submit" class="remove-question btn btn-sm" value="Remove">' +
-                                '</div>'
+        var newQuestion =   '<div class="new-question ui-state-default">' +
+            '<h5>' + question + '</h5>' +
+            response +
+            '<input type="submit" class="remove-question btn btn-sm" value="Remove">' +
+            '</div>'
 
         var $newQuestion = $(newQuestion).data('required', $required.is(':checked'))
 
@@ -88,6 +78,17 @@ $(function() {
         $required.prop('checked', false)
         $typeOptions.remove()
         $addQuestionButton.prop("disabled", true)
+    })
+
+
+//_________________________________FUNCTION DEFINITIONS__________________________________________
+    //TODO: DocBlock me please :)
+    /**
+     *
+     * @param $type
+     */
+    function addQuestion($type) {
+
     }
 
 
