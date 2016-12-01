@@ -25,8 +25,11 @@ class SurveyController extends AbstractActionController
     {
         $view = new viewModel();
 
-        //TODO get survey info from db in try catch
-        //TODO place in variables to use in view
+        //TODO check / try get survey info from db
+
+        $surveyId = $this->params('surveyId');
+
+        $view->setVariable('survey', $this->model->getSurvey($surveyId));
 
         return $view;
     }
