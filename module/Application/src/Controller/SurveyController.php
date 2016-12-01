@@ -34,7 +34,11 @@ class SurveyController extends AbstractActionController
         $this->userModel = $userModel;
     }
 
-
+    /**
+     * Retrieves survey information and makes available in survey's index view
+     *
+     * @return ViewModel
+     */
     public function indexAction()
     {
         $view = new viewModel();
@@ -73,7 +77,7 @@ class SurveyController extends AbstractActionController
                 } else {
                     $response['message'] = 'Missing required data';
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 session_destroy();
                 $response['message'] = 'Invalid user token';
             }
@@ -84,13 +88,12 @@ class SurveyController extends AbstractActionController
         return new JsonModel($response);
     }
 
-
     public function submitAction() {
         // receive $_POST data
     }
 
     /**
-     * Validates whether the correct data hasd been inputted
+     * Validates whether the correct data has been inputted
      *
      * @param $data data that is being inputted
      * @return bool if all data is present or not

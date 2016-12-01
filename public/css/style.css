@@ -72,9 +72,17 @@ div.container a.navbar-brand > img {
     display: block;
 }
 
+/* view survey */
+
+.question {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
 .modal-header, h4, .close {
     background-color: #5cb85c ;
     color:white !important;
     text-align: center;
     font-size: 30px;
+
 }

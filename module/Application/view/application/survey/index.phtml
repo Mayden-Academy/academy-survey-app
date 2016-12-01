@@ -8,7 +8,7 @@
         foreach($survey['questions'] as $question){
 
             $text = $question['text'];
-            if($question['required'] == 'true')     //convert to bool?
+            if($question['required'])     //convert to bool?
             {
                 $text .= ' *';
             }
@@ -18,7 +18,14 @@
 
             if($question['type'] == 'text')
             {
-                echo '<input type="text" name="' . $question['id'] . '">';     //id = question id?
+                echo '<input type="text" name="' . $question['id'];
+
+                if($question['required'])
+                {
+                    echo ' required';
+                }
+
+                echo '">';
             } else
             {
                 foreach ($question['options'] as $value)
@@ -26,7 +33,14 @@
                     echo    '<div>' . '<input ' .
                                 'type="'. $question['type'] . '"' .
                                 'value="' . $value['display_value'] . '"' .
-                                'name="' . $question['id'] . '"> ' .
+                                'name="' . $question['id'];
+
+                    if($question['required'])
+                    {
+                        echo ' required';
+                    }
+
+                    echo        '"> ' .
                                 $value['display_value'] .
                             '</div>';
                 }
