@@ -47,7 +47,7 @@ class SurveyController extends AbstractActionController
 
         $surveyId = $this->params('surveyId');
 
-        $view->setVariable('survey', $this->model->getSurvey($surveyId));
+        $view->setVariable('survey', $this->surveyModel->getSurvey($surveyId));
 
         return $view;
     }
