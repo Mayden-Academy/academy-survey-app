@@ -1,31 +1,29 @@
 <div class="container">
     <h1><?= $survey['name'] ?></h1>
+    <p>Fields marked with a * must be completed</p>
 
         <form method="post">
 
         <?php
         //just echoing html output so dont need view helper?
+        var_dump($survey);
         foreach($survey['questions'] as $question){
 
             $text = $question['text'];
-            if($question['required'])     //convert to bool?
-            {
-                $text .= ' *';
-            }
 
             echo    '<div class="question">' .
                 '<h5>' . $text . '</h5>';
 
             if($question['type'] == 'text')
             {
-                echo '<input type="text" name="' . $question['id'];
+                echo '<input type="text" name="' . $question['id'] . '"';
 
                 if($question['required'])
                 {
-                    echo ' required';
+                    echo 'required';
                 }
 
-                echo '">';
+                echo '>';
             } else
             {
                 foreach ($question['options'] as $value)
@@ -49,7 +47,7 @@
         }
 
         ?>
-        <input class="btn btn-success" type="submit" value="Submit">
+        <input class="btn btn-success" type="submit" id="userResponseSubmit" value="Submit">
         </form>
 
 </div>
