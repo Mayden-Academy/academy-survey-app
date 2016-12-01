@@ -5,11 +5,15 @@
         <form method="post">
 
         <?php
-        //just echoing html output so dont need view helper?
-        var_dump($survey);
+
         foreach($survey['questions'] as $question){
 
             $text = $question['text'];
+
+            if($question['required'])   //removed by rymes for reason?
+            {
+                $text .= ' *';
+            }
 
             echo    '<div class="question">' .
                 '<h5>' . $text . '</h5>';
@@ -31,14 +35,14 @@
                     echo    '<div>' . '<input ' .
                                 'type="'. $question['type'] . '"' .
                                 'value="' . $value['display_value'] . '"' .
-                                'name="' . $question['id'];
+                                'name="' . $question['id'] . '"';
 
                     if($question['required'])
                     {
                         echo ' required';
                     }
 
-                    echo        '"> ' .
+                    echo        '> ' .
                                 $value['display_value'] .
                             '</div>';
                 }
