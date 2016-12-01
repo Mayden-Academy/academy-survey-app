@@ -12,7 +12,7 @@ class AccountController extends AbstractActionController
     /** 
      * AccountController constructor. 
      * 
-     * @param UserModel $userModel 
+     * @param UserModel $userModel  An instane of UserModel
      */
     public function __construct(UserModel $userModel)
     {
@@ -21,7 +21,7 @@ class AccountController extends AbstractActionController
 
     /** 
      * Controller action for routes: 
-     *'/account' (GET only) 
+     * '/account' (GET only) 
      * 
      * Checks the $_SESSION against the database before loading account/index.phtml 
      * Redirects to '/login' on failure 
@@ -45,7 +45,7 @@ class AccountController extends AbstractActionController
 
     /** 
      * Controller action for routes: 
-     *'/account' (POST only) 
+     * '/account' (POST only) 
      * 
      * Tries to login base on data in $_POST['email'] and $_POST['password'] 
      * Redirects to '/account' (GET) on success 
