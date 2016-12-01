@@ -2,7 +2,7 @@ $(function() {
     var $saveBtn = $('#submit-btn')
 
     // Disable save survey button on load
-    $saveBtn.prop('disabled', true)
+        $saveBtn.prop("disabled", true)
 
     // Checking if validation conditions are met on each key entry in survey name box to enable save survey button
     $('#survey-name').keyup(function()
@@ -48,11 +48,11 @@ function validateSurvey($saveBtn)
 
     if(surveyNameLength > 0 && surveyNameLength <= 255 && questionCount > 0)
     {
-        $saveBtn.prop('disabled', false)
+        $saveBtn.prop("disabled", false)
     }
     else
     {
-        $saveBtn.prop('disabled', true)
+        $saveBtn.prop("disabled", true)
     }
 }
 
@@ -146,8 +146,3 @@ function typeConverter(questionType) {
     }
     return numberedType
 }
-
-
-
-
-
