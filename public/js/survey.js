@@ -71,7 +71,10 @@ function getValues($surveyName)
         var questionOrder = key + 1
         var questionText = $('h5', this).text()
         var questionType = $('.options input', this).attr('type')
-        var required = $(this).data('required')
+        var required = 0
+        if ($(this).data('required')) {
+            required = 1
+        }
         var options = []
 
         // Extracts either each option or the question name for a text input
