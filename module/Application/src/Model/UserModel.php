@@ -109,7 +109,7 @@ class UserModel {
             throw new \Exception('error validating user');
         }
 
-        $this->id = $id;
+        $this->id = (INT)$id;
         return $this->setUserDetails($user);
     }
 

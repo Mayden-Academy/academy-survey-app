@@ -7,7 +7,8 @@ use \Application\Controller\SurveyController;
 class SurveyControllerFactory
 {
     public function __invoke($sm) {
+        $userModel = $sm->get(\Application\Model\UserModel::class);
         $surveyModel = $sm->get(\Application\Model\SurveyModel::class);
-        return new SurveyController($surveyModel);
+        return new \Application\Controller\SurveyController($surveyModel, $userModel);
     }
 }
