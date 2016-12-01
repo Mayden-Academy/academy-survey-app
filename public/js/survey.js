@@ -1,58 +1,65 @@
 $(function() {
-    var questionCount
-    var surveyNameLength
     var $saveBtn = $('#submit-btn')
-    var $surveyName = $('#survey-name')
 
     $saveBtn.prop('disabled', true)
 
-    $surveyName.keyup(function()
+    $('#survey-name').keyup(function()
     {
-        surveyNameLength = $surveyName.val().length
-        validateSurvey(surveyNameLength, questionCount)
+        validateSurvey($saveBtn)
     })
 
     $saveBtn.click(function()
     {
-        var survey = getValues()
+        var survey = getValues($('#survey-name'))
         ajaxSurvey(survey)
     })
 
     $('#add-question').click(function()
     {
-        // updating question count for validation
-        questionCount = $('#question-container .new-question').length
-        validateSurvey(surveyNameLength, questionCount)
+        validateSurvey($saveBtn)
     })
 
     $(document).on('click', '.remove-question', function()
     {
-        questionCount = $('#question-container .new-question').length
-        validateSurvey(surveyNameLength, questionCount)
+        validateSurvey($saveBtn)
     })
 
-    function validateSurvey(surveyNameValue, questionCount)
-    {
-        if(surveyNameValue > 0 && surveyNameValue <= 255 && questionCount > 0)
-        {
-            $saveBtn.prop('disabled', false)
-        }
-        else
-        {
-            $saveBtn.prop('disabled', true)
-        }
-    }
-
+    //Redirects to account page on closing the survey saved modal
     $('#modalClose').click(function()
     {
         window.location.replace('/account')
     })
 })
 
-function getValues()
+/**
+ * Validates the survey by ensuring it has a name and more than one question, disables or enables save button as appropriate
+ * @param $saveBtn STRING jQuery selector of the save button
+ */
+function validateSurvey($saveBtn)
+{
+    var questionCount = $('#question-container .new-question').length
+    var surveyNameLength = $('#survey-name').val().length
+
+    if(surveyNameLength > 0 && surveyNameLength <= 255 && questionCount > 0)
+    {
+        $saveBtn.prop('disabled', false)
+    }
+    else
+    {
+        $saveBtn.prop('disabled', true)
+    }
+}
+
+/**
+ * Extracts data from user submitted survey and inserts into JSON object
+ * @param $surveyName STRING jQuery selector containing survey name
+ * @return OBJECT object ready for ajax request
+ */
+function getValues($surveyName)
 {
     var questions = []
 
+    //iterates over each question and extracts data into variables
     $('.new-question').each(function(key)
     {
         var questionOrder = key + 1
@@ -61,6 +68,7 @@ function getValues()
         var required = $(this).data('required')
         var options = []
 
+        //extracts either each option or the question name for a text input
         if (questionType != 'text') {
             $('.options input', this).each(function () {
                 options.push($(this).val())
@@ -69,8 +77,10 @@ function getValues()
             options.push(questionText)
         }
 
+        //calls typeConverter to convert questionType into correct number for DB
         questionType = typeConverter(questionType)
 
+        //inserts above variables into JSON object and into question array
         questions.push({
             "question_order" : questionOrder,
             "question_text" : questionText,
@@ -80,12 +90,18 @@ function getValues()
         })
     })
 
-    var survey = {
-        "survey_name": $('#survey-name').val(),
-        "questions": questions}
-    return survey;
+    //returns object containing survey name and array of questions
+    return {
+        "survey_name": $surveyName.val(),
+        "questions": questions
+    }
 }
 
+/**
+ * Performs ajax request to send data to controller, displays modal if successful and redirects to account page, or alert
+ * if unsuccessful
+ * @param survey ARRAY all survey data
+ */
 function ajaxSurvey(survey)
 {
     $.ajax({
@@ -104,6 +120,11 @@ function ajaxSurvey(survey)
     })
 }
 
+/**
+ * Converts questionType into the appropriate number for DB insertion
+ * @param questionType STRING question type
+ * @return INT equivalent question type number
+ */
 function typeConverter(questionType) {
     var numberedType
     switch(questionType) {
