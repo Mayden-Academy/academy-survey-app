@@ -49,9 +49,9 @@ class AccountController extends AbstractActionController
 
         try {
             if ($this->userModel->login($clean['email'], $clean['password'])) {
-                return $this->redirect()->toRoute('account',
+                return $this->redirect()->toRoute('account/post',
                     ['controller'=>AccountController::class,
-                        'action' => 'index',
+                        'action' => 'login',
                         'params' =>'hello']);
             } else {
                 return $this->redirect()->toRoute('login',

@@ -19,10 +19,10 @@ class UserAuthenticationController extends AbstractActionController
         if(!empty($_SESSION['userAuth'])) {
             if($this->userModel->validateToken($_SESSION['userAuth'], $_SESSION['id']))
             {
-                return $this->redirect()->toRoute('account',
+                return $this->redirect()->toRoute('account/get',
                     ['controller'=>AccountController::class,
                         'action' => 'index',
-                        'params' =>'hello']);
+                    ]);
             }  else {
                 session_destroy();
                 return new ViewModel();
