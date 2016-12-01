@@ -3,7 +3,6 @@ $(function() {
     var surveyNameLength
     var $saveBtn = $('#submit-btn')
     var $surveyName = $('#survey-name')
-    var surveyId
 
     $saveBtn.prop("disabled", true)
 
@@ -19,7 +18,7 @@ $(function() {
         ajaxSurvey(survey)
     })
 
-    $('#add-question').click(function() //TODO make the two below into one function?
+    $('#add-question').click(function()
     {
         // updating question count for validation
         questionCount = $('#question-container .new-question').length
@@ -58,11 +57,14 @@ function getValues()
         var options = []
 
         if (questionType != 'text') {
-            $('.options input', this).each(function()
-            {
+            $('.options input', this).each(function () {
                 options.push($(this).val())
             })
+        } else {
+            options.push(questionText)
         }
+
+        questionType = typeConverter(questionType)
 
         questions.push({
             "question_order" : questionOrder,
@@ -88,14 +90,30 @@ function ajaxSurvey(survey, surveyId)
         success: function(response)
         {
             if (response['success']) {
-                surveyId = response['surveyId'] //TODO check that this actually saves
+                var surveyId = response['surveyId']
                 alert("Data Saved")
             } else {
-                alert(response['displayMessage']) //TODO check if this is the key that is returned by controller
+                alert(response['message'])
             }
 
         }
     })
+}
+
+function typeConverter(questionType) {
+    var numberedType
+    switch(questionType) {
+        case 'text':
+            numberedType = 1
+            break
+        case 'radio':
+            numberedType = 2
+            break
+        case 'checkbox':
+            numberedType = 3
+            break
+    }
+    return numberedType
 }
 
 
