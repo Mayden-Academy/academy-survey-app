@@ -1,7 +1,7 @@
 $(function(){
-    var addQuestionButton = $('#add-question')
+    var $addQuestionButton = $('#add-question')
 
-    addQuestionButton.prop("disabled",true)
+    $addQuestionButton.prop("disabled",true)
 
     $('#input-selector').change(function()
     {
@@ -13,15 +13,15 @@ $(function(){
         {
             $('#question-options').remove()
         }
-        validateNewQuestion($('#question').val(), addQuestionButton, $('#input-selector').val())
+        validateNewQuestion($('#question').val(), $addQuestionButton, $('#input-selector').val())
     })
 
-    $('#question').keyup(function(e)
+    $('#question').keyup(function()
     {
-        validateNewQuestion($('#question').val(), addQuestionButton, $('#input-selector').val())
+        validateNewQuestion($('#question').val(), $addQuestionButton, $('#input-selector').val())
     })
-
-    addQuestionButton.click(function(e)
+    
+    $addQuestionButton.click(function()
         {
             var $questionContainer = $('#question-container')
             var $typeOptions = $('#question-options')
@@ -41,22 +41,19 @@ $(function(){
             if(type == 'text') {
                 response += '<input type="text" disabled >'
             } else {
-                if(options.length)
+                options.each(function(key, option)
                 {
-                    options.each(function(key,option)
-                    {
-                        response += '<div><input type="' + type + '" disabled value="' + option.value + '"> ' + option.value + '</div>'
-                    })
-                }
+                    response += '<div><input type="' + type + '" disabled value="' + option.value + '"> ' + option.value + '</div>'
+                })
             }
 
             response += '</div>'
 
             var newQuestion =   '<div class="new-question ui-state-default">' +
-                            '<h5>' + question + '</h5>' +
-                            response +
-                            '<input type="submit" class="remove-question btn btn-sm" value="Remove">' +
-                        '</div>'
+                                '<h5>' + question + '</h5>' +
+                                response +
+                                '<input type="submit" class="remove-question btn btn-sm" value="Remove">' +
+                                '</div>'
             
             var $newQuestion = $(newQuestion).data('required', $required.is(':checked'))
 
@@ -78,7 +75,7 @@ $(function(){
             $type.val('text-input')
             $required.prop('checked', false)
             $typeOptions.remove()
-            addQuestionButton.prop("disabled",true)
+            $addQuestionButton.prop("disabled",true)
         }
     )
 })
