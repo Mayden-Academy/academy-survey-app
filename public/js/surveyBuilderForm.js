@@ -63,6 +63,7 @@ $(function(){
 
             if($required.is(':checked')){
                 question += ' *'
+
             }
 
             if(type == 'text') {
