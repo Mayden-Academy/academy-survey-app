@@ -4,7 +4,7 @@ $(function() {
     var $saveBtn = $('#submit-btn')
     var $surveyName = $('#survey-name')
 
-    $saveBtn.prop("disabled", true)
+    $saveBtn.prop('disabled', true)
 
     $surveyName.keyup(function()
     {
@@ -35,13 +35,18 @@ $(function() {
     {
         if(surveyNameValue > 0 && surveyNameValue <= 255 && questionCount > 0)
         {
-            $saveBtn.prop("disabled", false)
+            $saveBtn.prop('disabled', false)
         }
         else
         {
-            $saveBtn.prop("disabled", true)
+            $saveBtn.prop('disabled', true)
         }
     }
+
+    $('#modalClose').click(function()
+    {
+        window.location.replace('/account')
+    })
 })
 
 function getValues()
@@ -81,21 +86,20 @@ function getValues()
     return survey;
 }
 
-function ajaxSurvey(survey, surveyId)
+function ajaxSurvey(survey)
 {
     $.ajax({
-        method: "POST",
-        url: "/survey/create",
+        method: 'POST',
+        url: '/survey/create',
         data: survey,
         success: function(response)
         {
             if (response['success']) {
                 var surveyId = response['surveyId']
-                alert("Data Saved")
+                $('#successModal').modal()
             } else {
                 alert(response['message'])
             }
-
         }
     })
 }
