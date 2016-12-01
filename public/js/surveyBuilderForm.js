@@ -23,6 +23,7 @@ $(function() {
         validateNewQuestion($('#question').val(), $addQuestionButton, $type.val())
     })
 
+    //get new question information from form and adds question to question container div
     $addQuestionButton.click(function()
     {
         var $questionContainer = $('#question-container')
