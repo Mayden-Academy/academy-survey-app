@@ -13,5 +13,14 @@ use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
 class SurveyControllerTest extends AbstractHttpControllerTestCase
 {
+public function testCreateActionGood () {
 
+
+
+
+
+    $surveyController = new SurveyController();
+    $_SESSION['userAuth'] = 'hello';
+
+}
 }

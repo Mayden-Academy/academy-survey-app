@@ -58,7 +58,7 @@ class SurveyController extends AbstractActionController
                 } else {
                     $response['message'] = 'Missing required data';
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 session_destroy();
                 $response['message'] = 'Invalid user token';
             }
@@ -70,7 +70,7 @@ class SurveyController extends AbstractActionController
     }
 
     /**
-     * Validates whether the correct data hasd been inputted
+     * Validates whether the correct data has been inputted
      *
      * @param $data data that is being inputted
      * @return bool if all data is present or not
