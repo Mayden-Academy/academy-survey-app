@@ -4,13 +4,10 @@ namespace Application\Controller;
 use Application\Model\UserModel;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\View\View;
 
 class AccountController extends AbstractActionController
 {
     private $userModel;
-    const LOGIN_HEADER = 'Location: /login';
-    const ACCOUNT_HEADER = 'Location: /account';
 
     public function __construct(UserModel $userModel)
     {
@@ -25,12 +22,16 @@ class AccountController extends AbstractActionController
                 return new ViewModel();
             } catch (Exception $e) {
                 session_destroy();
-                header(self::LOGIN_HEADER);
-                exit;
+                return $this->redirect()->toRoute('login',
+                    ['controller'=>UserAuthenticationController::class,
+                        'action' => 'index',
+                        'params' =>'hello']);
             }
         } else {
-            header(self::LOGIN_HEADER);
-            exit;
+            return $this->redirect()->toRoute('login',
+                ['controller'=>UserAuthenticationController::class,
+                    'action' => 'index',
+                    'params' =>'hello']);
         }
     }
 
@@ -40,21 +41,29 @@ class AccountController extends AbstractActionController
             $clean = self::cleanData($this->params()->fromPost());
         } catch (\Exception $e) {
             // TODO Post errrrrrror message to login page and display.
-            header(self::LOGIN_HEADER);
-            exit;
+            return $this->redirect()->toRoute('login',
+                ['controller'=>UserAuthenticationController::class,
+                    'action' => 'index',
+                    'params' =>'hello']);
         }
 
         try {
             if ($this->userModel->login($clean['email'], $clean['password'])) {
-                header(self::ACCOUNT_HEADER);
-                exit;
+                return $this->redirect()->toRoute('account',
+                    ['controller'=>AccountController::class,
+                        'action' => 'index',
+                        'params' =>'hello']);
             } else {
-                header(self::LOGIN_HEADER);
-                exit;
+                return $this->redirect()->toRoute('login',
+                    ['controller'=>UserAuthenticationController::class,
+                        'action' => 'index',
+                        'params' =>'hello']);
             }
         } catch (\Exception $e) {
-            header(self::LOGIN_HEADER);
-            exit;
+            return $this->redirect()->toRoute('login',
+                ['controller'=>UserAuthenticationController::class,
+                    'action' => 'index',
+                    'params' =>'hello']);
         }
 
     }
