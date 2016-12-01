@@ -39,4 +39,8 @@ class SurveyController extends AbstractActionController
         $response = ['success' => $this->model->save($this->params()->fromPost())];
         return new JsonModel($response);
     }
+
+    public function submitAction() {
+        // receive $_POST data
+    }
 }

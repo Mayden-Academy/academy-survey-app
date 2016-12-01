@@ -93,6 +93,27 @@ return [
 
                 ],
             ],
+            'userSurveySubmit' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/survey/submit',
+                    'defaults' => [
+                        'controller' => Controller\SurveyController::class,
+                        'action'     => 'submit',
+                    ],
+                ],
+                'may_terminate' => false,
+                'child_routes' => [
+                    'post' => [
+                        'type' => Method::class,
+                        'options' => [
+                            'verb' => 'post',
+                            'defaults' => [ 'action' => 'submit'],
+                        ]
+                    ],
+
+                ],
+            ],
             'logout' => [
                 'type'    => Literal::class,
                 'options' => [
