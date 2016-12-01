@@ -140,10 +140,13 @@ class SurveyModel
         {
             $query->setFetchMode(\PDO::FETCH_ASSOC);
             $survey = $query->fetch();
-            $survey['questions'] = $this->getQuestions($surveyId);
-            return $survey; //probably
+            if($survey)
+            {
+                $survey['questions'] = $this->getQuestions($surveyId);
+                return $survey; //probably
+            }
         }
-        return false;
+        throw new \Exception('survey not found');
     }
 
     public function getQuestions($surveyId)

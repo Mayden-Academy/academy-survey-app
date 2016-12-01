@@ -8,6 +8,7 @@
 namespace Application\Controller;
 
 use Application\Model\UserModel;
+use Zend\Mvc\Application;
 use Zend\Mvc\Controller\AbstractActionController;
 use Application\Model\SurveyModel;
 use Zend\View\Model\JsonModel;
@@ -38,11 +39,22 @@ class SurveyController extends AbstractActionController
     {
         $view = new viewModel();
 
-        //TODO check / try get survey info from db
-
         $surveyId = $this->params('surveyId');
 
-        $view->setVariable('survey', $this->model->getSurvey($surveyId));
+        try
+        {
+            $survey = $this->surveyModel->getSurvey($surveyId);
+
+            $view->setVariable('survey', $survey);
+
+        } catch(\Exception $e)
+        {
+            $view->setTemplate('error/404');
+            if($e->getMessage() == 'survey not found')
+            {
+                $view->setVariable('reason', Application::ERROR_ROUTER_NO_MATCH);
+            }
+        }
 
         return $view;
     }
