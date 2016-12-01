@@ -99,8 +99,7 @@ class UserModel {
      * @throws \Exception
      */
     public function validateToken($token, $id) {
-//        $sql = "SELECT `user`.*, `permissions`.`canCreateUser` FROM `user` LEFT JOIN  `permissions` ON `user`.`id`=`permissions`.`userId` WHERE `id` = :id;";
-        $sql = "SELECT * FROM `user` WHERE `id` = :id;";
+        $sql = "SELECT `validation_string` FROM `user` WHERE `id` = :id;";
         $query = $this->pdo->prepare($sql);
         $query->execute([':id' => $id]);
         $user = $query->fetch(\PDO::FETCH_ASSOC);
