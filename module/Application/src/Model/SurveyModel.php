@@ -101,4 +101,64 @@ class SurveyModel
         $optionDetails['question_id'] = $questionId;
         return $query->execute([$questionId, $displayValue]);
     }
+
+    public function getSurvey($surveyId)
+    {
+        $sql = "SELECT `id`, `name` FROM `survey` WHERE `id` = ?;";
+        $query = $this->pdo->prepare($sql);
+
+        if($query->execute([$surveyId]))
+        {
+            $query->setFetchMode(\PDO::FETCH_ASSOC);
+            $survey = $query->fetch();
+            $survey['questions'] = $this->getQuestions($surveyId);
+            return $survey; //probably
+        }
+        return false;
+    }
+
+    public function getQuestions($surveyId)
+    {
+        $sql = "SELECT `question`.`id`, `question`.`text`, `question_type`.`type`, `question`.`required`
+                FROM `question`
+                INNER JOIN `question_type` ON `question`.`type` = `question_type`.`id` 
+                WHERE `survey_id` = ?;";
+        $query = $this->pdo->prepare($sql);
+
+        if($query->execute([$surveyId]))
+        {
+            $query->setFetchMode(\PDO::FETCH_ASSOC);
+            $questions = $query->fetchAll();
+
+            foreach ($questions as $key => $value)
+            {
+                if($questions[$key]['type'] != 'text')
+                {
+                    $questions[$key]['options'] = $this->getOptions($questions[$key]['id']);
+                }
+            }
+
+            return $questions;
+        }
+        return false;
+    }
+
+    public function getOptions($questionId)
+    {
+        $sql = "SELECT `id`, `display_value` 
+                FROM `option` 
+                WHERE `question_id` = ?;";
+        $query = $this->pdo->prepare($sql);
+
+        if($query->execute([$questionId]))
+        {
+            $query->setFetchMode(\PDO::FETCH_ASSOC);
+            $options = $query->fetchAll();
+            return $options;
+        }
+        return false;
+    }
+
 }
+
+//TODO docblock get functions
