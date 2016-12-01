@@ -1,7 +1,7 @@
 $(function() {
     var $saveBtn = $('#submit-btn')
 
-    $saveBtn.prop('disabled', true)
+    $saveBtn.prop("disabled", true)
 
     $('#survey-name').keyup(function()
     {
@@ -42,11 +42,11 @@ function validateSurvey($saveBtn)
 
     if(surveyNameLength > 0 && surveyNameLength <= 255 && questionCount > 0)
     {
-        $saveBtn.prop('disabled', false)
+        $saveBtn.prop("disabled", false)
     }
     else
     {
-        $saveBtn.prop('disabled', true)
+        $saveBtn.prop("disabled", true)
     }
 }
 
