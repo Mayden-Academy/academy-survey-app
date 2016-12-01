@@ -1,30 +1,36 @@
 $(function() {
     var $saveBtn = $('#submit-btn')
 
+    // Disable save survey button on load
     $saveBtn.prop('disabled', true)
 
+    // Checking if validation conditions are met on each key entry in survey name box to enable save survey button
     $('#survey-name').keyup(function()
     {
         validateSurvey($saveBtn)
     })
 
+    // Extract questions to the JSON schema
+    // Pass to the ajax post
     $saveBtn.click(function()
     {
         var survey = getValues($('#survey-name'))
         ajaxSurvey(survey)
     })
 
+    // Checking if validation conditions are met on each new question addition
     $('#add-question').click(function()
     {
         validateSurvey($saveBtn)
     })
 
+    // Validation on question removal to disable save survey button in case removal leaves no questions
     $(document).on('click', '.remove-question', function()
     {
         validateSurvey($saveBtn)
     })
 
-    //Redirects to account page on closing the survey saved modal
+    // Redirects to account page on closing the survey saved modal
     $('#modalClose').click(function()
     {
         window.location.replace('/account')
@@ -59,7 +65,7 @@ function getValues($surveyName)
 {
     var questions = []
 
-    //iterates over each question and extracts data into variables
+    // Iterates over each question and extracts data into variables
     $('.new-question').each(function(key)
     {
         var questionOrder = key + 1
@@ -68,7 +74,7 @@ function getValues($surveyName)
         var required = $(this).data('required')
         var options = []
 
-        //extracts either each option or the question name for a text input
+        // Extracts either each option or the question name for a text input
         if (questionType != 'text') {
             $('.options input', this).each(function () {
                 options.push($(this).val())
@@ -77,10 +83,10 @@ function getValues($surveyName)
             options.push(questionText)
         }
 
-        //calls typeConverter to convert questionType into correct number for DB
+        // Calls typeConverter to convert questionType into correct number for DB
         questionType = typeConverter(questionType)
 
-        //inserts above variables into JSON object and into question array
+        // Inserts above variables into JSON object and into question array
         questions.push({
             "question_order" : questionOrder,
             "question_text" : questionText,
@@ -90,7 +96,7 @@ function getValues($surveyName)
         })
     })
 
-    //returns object containing survey name and array of questions
+    // Returns object containing survey name and array of questions
     return {
         "survey_name": $surveyName.val(),
         "questions": questions
