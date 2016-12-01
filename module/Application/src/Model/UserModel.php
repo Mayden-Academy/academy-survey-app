@@ -45,9 +45,9 @@ class UserModel {
             $_SESSION['id'] = $this->id;
             $_SESSION['email'] = $email;
 
-            $sql = "UPDATE `user` SET `validation_string` = :token WHERE `id` = " . $this->id . ";";
+            $sql = "UPDATE `user` SET `validation_string` = :token WHERE `id` = :id;";
             $query = $this->pdo->prepare($sql);
-            return $query->execute([':token'=>$token]);
+            return $query->execute([':token'=>$token, ':id' => $this->id]);
         } else {
             throw new \Exception('Invalid Login');
         }
