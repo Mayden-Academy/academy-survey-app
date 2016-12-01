@@ -9,11 +9,25 @@ class AccountController extends AbstractActionController
 {
     private $userModel;
 
+    /** 
+     * AccountController constructor. 
+     * 
+     * @param UserModel $userModel 
+     */
     public function __construct(UserModel $userModel)
     {
         $this->userModel = $userModel;
     }
 
+    /** 
+     * Controller action for routes: 
+     *'/account' (GET only) 
+     * 
+     * Checks the $_SESSION against the database before loading account/index.phtml 
+     * Redirects to '/login' on failure 
+     * 
+     * @return \Zend\Http\Response\ViewModel 
+     */
     public function indexAction()
     {
         if(!empty($_SESSION['userAuth'])) {
@@ -22,52 +36,56 @@ class AccountController extends AbstractActionController
                 return new ViewModel();
             } catch (Exception $e) {
                 session_destroy();
-                return $this->redirect()->toRoute('login',
-                    ['controller'=>UserAuthenticationController::class,
-                        'action' => 'index',
-                        'params' =>'hello']);
+                return $this->redirect()->toRoute('login');
             }
         } else {
-            return $this->redirect()->toRoute('login',
-                ['controller'=>UserAuthenticationController::class,
-                    'action' => 'index',
-                    'params' =>'hello']);
+            return $this->redirect()->toRoute('login');
         }
     }
 
+    /** 
+     * Controller action for routes: 
+     *'/account' (POST only) 
+     * 
+     * Tries to login base on data in $_POST['email'] and $_POST['password'] 
+     * Redirects to '/account' (GET) on success 
+     * Redirects to '/login' on failure 
+     * 
+     * @return \Zend\Http\Response\ViewModel 
+     */
     public function loginAction() {
 
         try {
             $clean = self::cleanData($this->params()->fromPost());
         } catch (\Exception $e) {
             // TODO Post errrrrrror message to login page and display.
-            return $this->redirect()->toRoute('login',
-                ['controller'=>UserAuthenticationController::class,
-                    'action' => 'index',
-                    'params' =>'hello']);
+            return $this->redirect()->toRoute('login');
         }
 
         try {
             if ($this->userModel->login($clean['email'], $clean['password'])) {
-                return $this->redirect()->toRoute('account/get',
-                    ['controller'=>AccountController::class,
-                        'action' => 'login',
-                        'params' =>'hello']);
+                return $this->redirect()->toRoute('account/get');
             } else {
-                return $this->redirect()->toRoute('login',
-                    ['controller'=>UserAuthenticationController::class,
-                        'action' => 'index',
-                        'params' =>'hello']);
+                return $this->redirect()->toRoute('login');
             }
         } catch (\Exception $e) {
-            return $this->redirect()->toRoute('login',
-                ['controller'=>UserAuthenticationController::class,
-                    'action' => 'index',
-                    'params' =>'hello']);
+            return $this->redirect()->toRoute('login');
         }
 
     }
 
+    /** 
+     * Helper function for $this->loginAction() 
+     * Cleans $_POST data from the 'login/index.phtml' form for use in login 
+     * 
+     * @param $data The $_POST array 
+     * 
+     * @return array A clean $_POST array 
+     * 
+     * @throws \Exception 'Missing emxail and password' 
+     * @throws \Exception 'Missing email' 
+     * @throws \Exception 'Missing password' 
+     */
     static public function cleanData($data) {
 
         $clean = [];
