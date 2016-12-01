@@ -33,15 +33,16 @@
                     echo    '<div>' . '<input ' .
                                 'type="'. $question['type'] . '"' .
                                 'value="' . $value['display_value'] . '"' .
-                                'name="' . $question['id'] . '"> ' .
-                                $value['display_value'];
+                                'name="' . $question['id'];
 
                     if($question['required'])
                     {
                         echo ' required';
                     }
 
-                    echo    '</div>';
+                    echo        '"> ' .
+                                $value['display_value'] .
+                            '</div>';
                 }
             }
             echo    '</div>';
