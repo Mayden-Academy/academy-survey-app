@@ -127,7 +127,7 @@ return [
             'survey' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/survey/:surveyId',
+                    'route'    => '/survey/view/:surveyId',
                     'defaults' => [
                         'controller' => Controller\SurveyController::class,
                         'action'     => 'index',
