@@ -102,6 +102,12 @@ class SurveyModel
         return $query->execute([$questionId, $displayValue]);
     }
 
+    /**
+     * Gets a survey from the database for a given survey id.
+     * @param INT $surveyId id of the survey required
+     *
+     * @return BOOL/ARRAY array of given survey details, or false if query fails
+     */
     public function getSurvey($surveyId)
     {
         $sql = "SELECT `id`, `name` FROM `survey` WHERE `id` = ?;";
@@ -112,11 +118,20 @@ class SurveyModel
             $query->setFetchMode(\PDO::FETCH_ASSOC);
             $survey = $query->fetch();
             $survey['questions'] = $this->getQuestions($surveyId);
-            return $survey; //probably
+            return $survey;
         }
         return false;
     }
 
+    /**
+     * Gets the questions for a given survey from the database.
+     * If the question is a radio or checkbox option, also gets
+     * the associated options.
+     *
+     *@param INT $surveyId id of the survey whose questions are required
+     *
+     *@return BOOL/ARRAY array of given survey's questions, or false if query fails
+     */
     public function getQuestions($surveyId)
     {
         $sql = "SELECT `question`.`id`, `question`.`text`, `question_type`.`type`, `question`.`required`
@@ -143,6 +158,12 @@ class SurveyModel
         return false;
     }
 
+    /**
+     * Gets the options associated with a given question id.
+     * @param INT $questionId id of the question whose options are required.
+     *
+     * @return BOOL/ARRAY array of given question's options, or false if query fails
+     */
     public function getOptions($questionId)
     {
         $sql = "SELECT `id`, `display_value` 
@@ -160,5 +181,3 @@ class SurveyModel
     }
 
 }
-
-//TODO docblock get functions
