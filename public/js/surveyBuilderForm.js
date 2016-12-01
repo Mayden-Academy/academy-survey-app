@@ -96,11 +96,12 @@ $(function(){
 function addOptionsCreator($container)
 {
     $container.append(
-        '<div id="question-options" class="input-group">' +
+        '<div id="question-options">' +
         '<label for="option-text">Options:</label>' +
-        '<br>' +
+        '<div id="new-option-container" class="input-group col-xs-2">' +
         '<input type="text" id="option-text">' +
         '<button class="btn input-group-addon" id="add-option">+</button>' +
+        '</div>' +
         '</div>'
     )
 
@@ -119,7 +120,7 @@ function createAddOptionHandler()
     {
         if($('#option-text').val() !== '') // disables an empty string being added as an option
         {
-            createOption($('#option-text'))
+            createOption($('#new-option-container'))
         }
 
         validateNewQuestion($('#question').val(), $('#add-question'), $('#input-selector').val())
@@ -130,12 +131,13 @@ function createAddOptionHandler()
 /**
  * Creates a disabled field containing the text passed in, with a remove (-) button .
  *
- * @param $optionText OBJECT the text input element containing the text for the option being created
+ * @param $optionContainer OBJECT the div containing the text input and add button for creating new options
  */
-function  createOption($optionText)
+function  createOption($optionContainer)
 {
-    $('#option-text').before(
-        '<div class="input-group">' +
+    var $optionText = $optionContainer.find('input')
+    $optionContainer.before(
+        '<div class="input-group col-xs-2">' +
         '<input class="bg-success" value="' + $optionText.val() + '" disabled>' +
         '<button class="btn remove-option input-group-addon">-</button>' +
         '</div>'
