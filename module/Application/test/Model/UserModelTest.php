@@ -9,21 +9,21 @@ class UserModelTest extends TestCase {
     /**
      * Tests that setUserDetails() returns true when passed valid array
      */
-    public function testSuccessfulSetUserDetails(){
+    public function testSetUserDetailsGood(){
         $mockPDO = $this->createMock('PDO');
         $user = new UserModel($mockPDO);
         $userDetails = ['id'=>'1', 'email'=>'example@email.com'];
         $this->assertTrue($user->setUserDetails($userDetails));
     }
 
-    public function testUnsuccessfulSetUserDetails(){
+    public function testSetUserDetailsBad(){
         $mockPDO = $this->createMock('PDO');
         $user = new UserModel($mockPDO);
         $userDetails = ['email'=>'example@email.com'];
         $this->assertNotTrue($user->setUserDetails($userDetails));
     }
 
-    public function testMalformedSetUserDetails(){
+    public function testSetUserDetailsMalformed(){
         $mockPDO = $this->createMock('PDO');
         $user = new UserModel($mockPDO);
         $userDetails = 1;
