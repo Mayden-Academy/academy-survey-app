@@ -5,12 +5,14 @@ $(function() {
 
     var $type = $('#input-selector')
 
-    $type.change(function () {
-        if ($type.val() !== 'text-input' && $('#question-options').length < 1) {
-            addOptionsCreator($('#input-container'))
+    $type.change(function () { // attaching a listener for the question input type being changed
 
-        } else if ($type.val() == 'text-input') {
-            $('#question-options').remove()
+        //checking that it's being changed from the text input type to a non-text input type
+        if ($('#question-options').length < 1 && $type.val() !== 'text-input') {
+            addOptionsCreator($('#input-container')) // brings up the multiple choice options controls
+
+        } else if ($type.val() == 'text-input') { // checking that it's being changed to the text input type
+            $('#question-options').remove() //removes the multiple choice options controls
         }
         validateNewQuestion($('#question').val(), addQuestionButton, $type.val())
     })
@@ -121,7 +123,7 @@ $(function() {
                 createOption($('#new-option-container'))
             }
 
-            validateNewQuestion($('#question').val(), $('#add-question'), $type.val())
+            validateNewQuestion($('#question').val(), $('#add-question'), $('#input-selector').val())
         })
     }
 
@@ -154,22 +156,26 @@ $(function() {
      */
     function removeOption(currentOption) {
         $(currentOption).parent('div').remove()
-        validateNewQuestion($('#question').val(), $('#add-question'), $type.val())
+        validateNewQuestion($('#question').val(), $('#add-question'), $('#input-selector').val())
     }
 
     /**
      * Validates input of new question form
      * Enables button if all inputs valid
-     *
+     *TODO put in the names of the parameters
+     * TODO change the data type of the 2nd parameter as it's a jQuery object, which is itself a JS object
      * @param STRING question text in question's text box
      * @param JQUERYSELECTOR button to be enabled
+     * @param $questionType OBJECT the input type currently selected in the dropdown menu
      */
-    function validateNewQuestion(questionText, $button, questionType) {
+    function validateNewQuestion(questionText, $button, $questionType) {
+
+        var $removeOption = $('.remove-option')
         if (
             (
-                ((questionType == 'radio-input') && ($('.remove-option').length >= 2)) ||
-                ((questionType == 'checkbox-input') && ($('.remove-option').length >= 1)) ||
-                (questionType == 'text-input')
+                (($questionType == 'radio-input') && ($removeOption.length >= 2)) ||
+                (($questionType == 'checkbox-input') && ($removeOption.length >= 1)) ||
+                ($questionType == 'text-input')
             ) &&
             questionText.length >= 10 &&
             questionText.length <= 255
