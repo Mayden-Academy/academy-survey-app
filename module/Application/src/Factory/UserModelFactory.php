@@ -7,12 +7,13 @@
  */
 
 namespace Application\Factory;
+use Application\Model\UserModel;
 
 class UserModelFactory
 {
     public function __invoke($sm)
     {
         $pdo = $sm->get('pdo');
-        return new \Application\Model\UserModel($pdo);
+        return new UserModel($pdo);
     }
 }
