@@ -35,6 +35,13 @@ class SurveyController extends AbstractActionController
         $this->userModel = $userModel;
     }
 
+    /**
+     * Retrieves survey information:
+     * if successful makes available in survey's index view
+     * else shows error page
+     *
+     * @return ViewModel
+     */
     public function indexAction()
     {
         $view = new viewModel();
@@ -130,5 +137,4 @@ class SurveyController extends AbstractActionController
         }
         return false;
     }
-
 }
