@@ -70,7 +70,7 @@ class UserModel {
             throw new \Exception("not valid email");
         }
 
-        $sql = "SELECT * FROM `user` WHERE `email` = :email;";
+        $sql = "SELECT `id`, `email`, `password`, `salt` FROM `user` WHERE `email` = :email;";
         $query = $this->pdo->prepare($sql);
         $query->execute([':email'=>$email]);
         $user = $query->fetch(\PDO::FETCH_ASSOC);
@@ -79,10 +79,10 @@ class UserModel {
             throw new \Exception("user does not exist");
         }
 
-        $encryptPass = $user['salt'] . $password;
-        $encryptPass = sha1($encryptPass);
+        $saltedPassword = $user['salt'] . $password;
+        $encryptedPassword = sha1($saltedPassword);
 
-        if($user['password'] != $encryptPass) {
+        if($user['password'] != $encryptedPassword) {
             throw new \Exception("incorrect email and password combination");
         } else {
             $this->setUserDetails($user);

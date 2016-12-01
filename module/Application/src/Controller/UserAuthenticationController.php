@@ -5,12 +5,13 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Application\Model\UserModel;
 
 class UserAuthenticationController extends AbstractActionController
 {
     private $userModel;
 
-    public function __construct($userModel)
+    public function __construct(UserModel $userModel)
     {
         $this->userModel = $userModel;
     }
