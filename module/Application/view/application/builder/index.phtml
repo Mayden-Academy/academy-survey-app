@@ -1,0 +1,52 @@
+<div>
+    <div class="survey-section">
+        <h1>Survey Builder</h1>
+    </div>
+    <div class="survey-section">
+        <form>
+            <label for="survey-name"><h3>Survey Name</h3></label>
+            <input type="text" id="survey-name" name="survey-name">
+        </form>
+    </div>
+</div>
+<div class="survey-section">
+    <h3>Questions</h3>
+    <div id="question-container"></div>
+</div>
+<hr>
+<div id="question-adder" class="survey-section">
+    <div id="input-container">
+        <div>
+            <label for="question">Question</label> (between 10 - 255 characters)
+            <input type="text" id="question" name="question">
+        </div>
+        <label for="input-selector">Type</label>
+        <select id="input-selector">
+            <option value="text-input" selected>Text</option>
+            <option value="radio-input">Radio</option>
+            <option value="checkbox-input">Checkbox</option>
+        </select>
+        <label for="required">Required?</label>
+        <input type="checkbox" id="required" name="required">
+    </div>
+    <input id="add-question" class="btn btn-sm btn-success" type="submit" value="Add">
+</div>
+<hr>
+<div id="page-options" class="survey-section">
+    <a id="cancel-btn" class="btn btn-danger" href="/account">Cancel</a>
+    <input id="submit-btn" class="btn btn-success" type="submit" value="Save Survey">
+</div>
+<div class="container">
+    <div class="modal fade" id="successModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="padding:35px 50px;">
+                    <h4>Survey has been saved</h4>
+                </div>
+                <div class="modal-body text-center" style="padding:40px 50px;">
+                    <button type="submit" class="btn btn-success btn-default" id="modalClose" data-dismiss="modal"> Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

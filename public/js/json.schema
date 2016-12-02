@@ -1,0 +1,17 @@
+// This is the Ajax data that will be created with a new survey
+// ... means you can have more than one
+{
+  "survey_name" : "Name",
+  "user_id" : 1,
+  "questions" : [
+    {
+      "question_order" : 1,
+      "question_text" : "what is your gender?",
+      "question_type" : 2,
+      "required" : "true",
+      "options" : [
+        "male", "female"
+        ]
+    }...
+  ]
+}
