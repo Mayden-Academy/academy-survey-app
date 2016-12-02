@@ -102,8 +102,11 @@ class SurveyController extends AbstractActionController
         return new JsonModel($response);
     }
 
-    public function submitAction() {
-        // receive $_POST data
+    public function submitAction()
+    {
+        $data = $this->params()->fromPost();
+        $response = ['message' => 'received test'];
+        return new JsonModel($response);
     }
 
     /**
