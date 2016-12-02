@@ -99,7 +99,7 @@ class UserModel {
      * @throws \Exception
      */
     public function validateToken($token, $id) {
-        $sql = "SELECT `validation_string` FROM `user` WHERE `id` = :id;";
+        $sql = "SELECT `validation_string`, `id`, `email` FROM `user` WHERE `id` = :id;";
         $query = $this->pdo->prepare($sql);
         $query->execute([':id' => $id]);
         $user = $query->fetch(\PDO::FETCH_ASSOC);

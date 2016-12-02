@@ -34,7 +34,7 @@ class AccountController extends AbstractActionController
             try {
                 $this->userModel->validateToken($_SESSION['userAuth'], $_SESSION['id']);
                 return new ViewModel();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 session_destroy();
                 return $this->redirect()->toRoute('login');
             }
