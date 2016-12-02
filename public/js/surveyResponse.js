@@ -21,7 +21,7 @@ $(function() {
 })
 
 function submitForm() {
-    ajaxSurvey('trees')
+    ajaxUserSurvey('trees')
 }
 
 /**
@@ -29,7 +29,7 @@ function submitForm() {
  * if unsuccessful
  * @param survey ARRAY all survey data
  */
-function ajaxSurvey(survey)
+function ajaxUserSurvey(survey)
 {
     $.ajax({
         method: 'POST',
@@ -40,7 +40,7 @@ function ajaxSurvey(survey)
             if (response['success']) {
                 $('#successModal').modal()
             } else {
-                
+
                 alert(response['message'])
             }
         }
