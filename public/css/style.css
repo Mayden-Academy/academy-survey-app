@@ -50,7 +50,16 @@ div.container a.navbar-brand > img {
 
 .new-question,
 .ui-state-highlight {
-    margin-top: 20px;
+    padding: 10px;
+}
+
+.new-question:hover {
+    cursor: move;
+    background-color: #f4f4f4;
+}
+
+.options {
+    margin-bottom: 10px;
 }
 
 #page-options {
@@ -70,4 +79,19 @@ div.container a.navbar-brand > img {
 #add-question {
     margin-top: 10px;
     display: block;
+}
+
+/* view survey */
+
+.question {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.modal-header, h4, .close {
+    background-color: #5cb85c ;
+    color:white !important;
+    text-align: center;
+    font-size: 30px;
+
 }

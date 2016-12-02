@@ -1,0 +1,57 @@
+<div class="container">
+    <h1><?= $survey['name'] ?></h1>
+    <p>Fields marked with a * must be completed</p>
+
+        <form method="post">
+
+        <?php
+
+        foreach($survey['questions'] as $question){
+
+            $text = $question['text'];
+
+            if($question['required'])   //removed by rymes for reason?
+            {
+                $text .= ' *';
+            }
+
+            echo    '<div class="question">' .
+                '<h5>' . $text . '</h5>';
+
+            if($question['type'] == 'text')
+            {
+                echo '<input type="text" name="' . $question['id'] . '"';
+
+                if($question['required'])
+                {
+                    echo 'required';
+                }
+
+                echo '>';
+            } else
+            {
+                foreach ($question['options'] as $value)
+                {
+                    echo    '<div>' . '<input ' .
+                                'type="'. $question['type'] . '"' .
+                                'value="' . $value['display_value'] . '"' .
+                                'name="' . $question['id'] . '"';
+
+                    if($question['required'])
+                    {
+                        echo ' required';
+                    }
+
+                    echo        '> ' .
+                                $value['display_value'] .
+                            '</div>';
+                }
+            }
+            echo    '</div>';
+        }
+
+        ?>
+        <input class="btn btn-success" type="submit" id="userResponseSubmit" value="Submit">
+        </form>
+
+</div>

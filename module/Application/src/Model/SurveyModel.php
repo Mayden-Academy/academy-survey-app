@@ -11,7 +11,15 @@ namespace Application\Model;
 
 class SurveyModel
 {
+
+    /**
+     * @var the database connection
+     */
     private $pdo;
+    /**
+     * @var id for the survey once it has been saved
+     */
+    private $surveyId;
 
     /**
      * SurveyModel constructor.
@@ -29,29 +37,43 @@ class SurveyModel
      * @return bool did the save work
      * @throws \Exception
      */
-    public function save($survey) {
-       $surveyId = $this->saveSurveyDetails($survey['survey_name'], $survey['user_id']);
-         if (is_int($surveyId) && $surveyId > 0){
-             foreach($survey['questions'] as $question) {
-                 $options = $question['options'];
-                 unset($question['options']);
+    public function save($survey)
+    {
+        $this->surveyId = $this->saveSurveyDetails($survey['survey_name'], $survey['user_id']);
+        if (is_int($this->surveyId) && $this->surveyId > 0)
+        {
+            foreach($survey['questions'] as $question)
+            {
+                $options = $question['options'];
+                unset($question['options']);
 
-                 $questionId =  $this->saveQuestionDetails($question, $surveyId);
-                 if (is_int($questionId) && $questionId > 0){
-                     foreach($options as $option) {
-                         if(!$this->saveOptionDetails($option, $questionId)) {
-                             throw new \Exception('Option save failed');
-                         }
-                     }
-                 } else {
-                     throw new \Exception('Question save failed');
-                 }
-             }
-         } else {
-             throw new \Exception('Survey save failed');
-         }
+                $questionId =  $this->saveQuestionDetails($question, $this->surveyId);
+                if (is_int($questionId) && $questionId > 0)
+                {
+                    foreach($options as $option)
+                    {
+                        if(!$this->saveOptionDetails($option, $questionId))
+                        {
+                            throw new \Exception('Option save failed');
+                        }
+                    }
+                } else {
+                    throw new \Exception('Question save failed');
+                }
+            }
+        } else {
+            throw new \Exception('Survey save failed');
+        }
 
         return true;
+    }
+
+    /**
+     * @return INT id for the saved survey
+     */
+    public function getSurveyId()
+    {
+        return $this->surveyId;
     }
 
     /**
@@ -61,8 +83,10 @@ class SurveyModel
      * @param $userId id of the user that created the survey
      * @return bool/int id of the saved survey or false if the save failed
      */
-    public function saveSurveyDetails($surveyName, $userId) {
-        $sql = "INSERT INTO `survey` (`name`, `creator`) VALUES (?, ?);";
+    public function saveSurveyDetails($surveyName, $userId)
+    {
+        $sql = "INSERT INTO `survey` (`name`, `creator`)
+                VALUES (?, ?);";
         $query = $this->pdo->prepare($sql);
         if ($query->execute([$surveyName, $userId])) {
             return (INT)$this->pdo->lastInsertId();
@@ -77,12 +101,15 @@ class SurveyModel
      * @param $surveyId id of the survey that has been created
      * @return bool/int id of saved question or false if the save failed
      */
-    public function saveQuestionDetails($questionDetails, $surveyId) {
-        $sql = "INSERT INTO `question` (`text`, `type`, `survey_id`, `required`, `order`) VALUES (:question_text, :question_type, :survey_id, :required, :question_order);";
+    public function saveQuestionDetails($questionDetails, $surveyId)
+    {
+        $sql = "INSERT INTO `question` (`text`, `type`, `survey_id`, `required`, `order`)
+                VALUES (:question_text, :question_type, :survey_id, :required, :question_order);";
         $query = $this->pdo->prepare($sql);
         $questionDetails['survey_id'] = $surveyId;
 
-        if ($query->execute($questionDetails)) {
+        if ($query->execute($questionDetails))
+        {
             return (INT)$this->pdo->lastInsertId();
         }
         return false;
@@ -95,10 +122,95 @@ class SurveyModel
      * @param $questionId id of the question that the options relates too
      * @return bool if save option worked
      */
-    public function saveOptionDetails($displayValue, $questionId ) {
-        $sql = "INSERT INTO `option` (`question_id`, `display_value`) VALUES (?, ?);";
+    public function saveOptionDetails($displayValue, $questionId )
+    {
+        $sql = "INSERT INTO `option` (`question_id`, `display_value`)
+                VALUES (?, ?);";
         $query = $this->pdo->prepare($sql);
         $optionDetails['question_id'] = $questionId;
         return $query->execute([$questionId, $displayValue]);
     }
+
+    /**
+     * Gets a survey from the database for a given survey id.
+     * @param INT $surveyId id of the survey required
+     *
+     * @return BOOL/ARRAY array of given survey details, or false if query fails
+     */
+    public function getSurvey($surveyId)
+    {
+        $sql = "SELECT `id`, `name` FROM `survey` WHERE `id` = ?;";
+        $query = $this->pdo->prepare($sql);
+
+        if($query->execute([$surveyId]))
+        {
+            $query->setFetchMode(\PDO::FETCH_ASSOC);
+            $survey = $query->fetch();
+
+            if($survey)
+            {
+                $survey['questions'] = $this->getQuestions($surveyId);
+                return $survey;
+            }
+        }
+        throw new \Exception('survey not found');
+    }
+
+    /**
+     * Gets the questions for a given survey from the database.
+     * If the question is a radio or checkbox option, also gets
+     * the associated options.
+     *
+     *@param INT $surveyId id of the survey whose questions are required
+     *
+     *@return BOOL/ARRAY array of given survey's questions, or false if query fails
+     */
+    public function getQuestions($surveyId)
+    {
+        $sql = "SELECT `question`.`id`, `question`.`text`, `question_type`.`type`, `question`.`required`
+                FROM `question`
+                INNER JOIN `question_type` ON `question`.`type` = `question_type`.`id` 
+                WHERE `survey_id` = ?;";
+        $query = $this->pdo->prepare($sql);
+
+        if($query->execute([$surveyId]))
+        {
+            $query->setFetchMode(\PDO::FETCH_ASSOC);
+            $questions = $query->fetchAll();
+
+            foreach ($questions as $key => $value)
+            {
+                if($questions[$key]['type'] != 'text')
+                {
+                    $questions[$key]['options'] = $this->getOptions($questions[$key]['id']);
+                }
+            }
+
+            return $questions;
+        }
+        return false;
+    }
+
+    /**
+     * Gets the options associated with a given question id.
+     * @param INT $questionId id of the question whose options are required.
+     *
+     * @return BOOL/ARRAY array of given question's options, or false if query fails
+     */
+    public function getOptions($questionId)
+    {
+        $sql = "SELECT `id`, `display_value` 
+                FROM `option` 
+                WHERE `question_id` = ?;";
+        $query = $this->pdo->prepare($sql);
+
+        if($query->execute([$questionId]))
+        {
+            $query->setFetchMode(\PDO::FETCH_ASSOC);
+            $options = $query->fetchAll();
+            return $options;
+        }
+        return false;
+    }
+
 }

@@ -19,6 +19,7 @@
 
         <!-- Scripts -->
         <?= $this->headScript()
+            ->prependFile($this->basePath('js/surveyResponse.js'))
             ->prependFile($this->basePath('js/account.js'))
             ->prependFile($this->basePath('js/survey.js'))
             ->prependFile($this->basePath('js/surveyBuilderForm.js'))
