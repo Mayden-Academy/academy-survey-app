@@ -7,7 +7,7 @@
 #
 # Host: 192.168.20.56 (MySQL 5.6.33)
 # Database: survey_app
-# Generation Time: 2016-11-30 10:02:59 +0000
+# Generation Time: 2016-12-01 15:56:33 +0000
 # ************************************************************
 
 
@@ -53,6 +53,37 @@ CREATE TABLE `question` (
   KEY `type` (`type`),
   CONSTRAINT `question_ibfk_1` FOREIGN KEY (`survey_id`) REFERENCES `survey` (`id`),
   CONSTRAINT `question_ibfk_2` FOREIGN KEY (`type`) REFERENCES `question_type` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+# Dump of table question_response
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `question_response`;
+
+CREATE TABLE `question_response` (
+  `id` int(11) NOT NULL,
+  `question_id` int(11) unsigned NOT NULL,
+  `question_text` varchar(255) NOT NULL DEFAULT '',
+  `survey_id` int(11) NOT NULL,
+  `response_text` varchar(255) DEFAULT NULL,
+  UNIQUE KEY `id` (`id`,`question_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+# Dump of table question_response_option
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `question_response_option`;
+
+CREATE TABLE `question_response_option` (
+  `option_id` int(11) unsigned NOT NULL,
+  `question_id` int(11) NOT NULL,
+  `display_value` varchar(255) NOT NULL DEFAULT '',
+  `question_response_id` int(11) NOT NULL,
+  UNIQUE KEY `question_id` (`question_id`,`option_id`,`question_response_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
