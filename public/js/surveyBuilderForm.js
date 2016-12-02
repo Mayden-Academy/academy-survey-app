@@ -5,23 +5,32 @@ $(function() {
 
     var $type = $('#input-selector')
 
-    $type.change(function () { // attaching a listener for the question input type being changed
+    $type.change(function () // attaching a listener for the question input type being changed
+    {
 
-        //checking that it's being changed from the text input type to a non-text input type
-        if ($('#question-options').length < 1 && $type.val() !== 'text-input') {
-            addOptionsCreator($('#input-container')) // brings up the multiple choice options controls
+        /*
+        @1 checking that it's being changed from the text input type to a non-text input type
+        @2 checking that it's being changed to the text input type
+        @3 removes the multiple choice options controls
+         */
+        if ($('#question-options').length < 1 && $type.val() !== 'text-input')      //@1
+        {
+            addOptionsCreator($('#input-container'))
 
-        } else if ($type.val() == 'text-input') { // checking that it's being changed to the text input type
-            $('#question-options').remove() //removes the multiple choice options controls
+        } else if ($type.val() == 'text-input')     //@2
+        {
+            $('#question-options').remove()     //@3
         }
         validateNewQuestion($('#question').val(), addQuestionButton, $type.val())
     })
 
-    $('#question').keyup(function(e) {
+    $('#question').keyup(function(e)
+    {
         validateNewQuestion($('#question').val(), addQuestionButton, $type.val())
     })
 
-    addQuestionButton.click(function(e) {
+    addQuestionButton.click(function(e)
+    {
         addQuestion($type)
     })
 
@@ -34,7 +43,8 @@ $(function() {
      *
      * @param $type
      */
-    function addQuestion($type) {
+    function addQuestion($type)
+    {
         var $questionContainer = $('#question-container')
         var $typeOptions = $('#question-options')
         var $question = $('#question')
@@ -45,15 +55,19 @@ $(function() {
         var options = $typeOptions.find('.input-group input')
         var response = '<div class="options">'
 
-        if ($required.is(':checked')) {
+        if ($required.is(':checked'))
+        {
             question += ' *'
         }
 
-        if (type == 'text') {
+        if (type == 'text')
+        {
             response += '<input type="text" disabled >'
         } else {
-            if (options.length) {
-                options.each(function (key, option) {
+            if (options.length)
+            {
+                options.each(function (key, option)
+                {
                     response += '<div><input type="' + type + '" disabled value="' + option.value + '"> ' + option.value + '</div>'
                 })
             }
@@ -77,7 +91,8 @@ $(function() {
             }
         )
 
-        $('.remove-question').click(function () {
+        $('.remove-question').click(function ()
+        {
             $(this).parent('.new-question').remove()
         })
 
@@ -96,7 +111,8 @@ $(function() {
      *
      * @param $container OBJECT the created DOM objects are appended to the contents of this html element
      */
-    function addOptionsCreator($container) {
+    function addOptionsCreator($container)
+    {
         $container.append(
             '<div id="question-options">' +
             '<label for="option-text">Options:</label>' +
@@ -116,8 +132,10 @@ $(function() {
      * non-empty) to the list of options for that question.
      * Then validates the form.
      */
-    function createAddOptionHandler() {
-        $('#add-option').click(function () {
+    function createAddOptionHandler()
+    {
+        $('#add-option').click(function ()
+        {
             if ($('#option-text').val() !== '') // disables an empty string being added as an option
             {
                 createOption($('#new-option-container'))
@@ -133,7 +151,8 @@ $(function() {
      *
      * @param $optionContainer OBJECT the div containing the text input and add button for creating new options
      */
-    function createOption($optionContainer) {
+    function createOption($optionContainer)
+    {
         var $optionText = $optionContainer.find('input')
         $optionContainer.before(
             '<div class="input-group col-xs-2">' +
@@ -143,7 +162,8 @@ $(function() {
         )
         $optionText.val('')
 
-        $('.remove-option').click(function () {
+        $('.remove-option').click(function ()
+        {
             removeOption(this)
         })
     }
@@ -154,7 +174,8 @@ $(function() {
      *
      * @param currentOption OBJECT the remove button for the option to be removed
      */
-    function removeOption(currentOption) {
+    function removeOption(currentOption)
+    {
         $(currentOption).parent('div').remove()
         validateNewQuestion($('#question').val(), $('#add-question'), $('#input-selector').val())
     }
@@ -168,7 +189,8 @@ $(function() {
      * @param JQUERYSELECTOR button to be enabled
      * @param $questionType OBJECT the input type currently selected in the dropdown menu
      */
-    function validateNewQuestion(questionText, $button, $questionType) {
+    function validateNewQuestion(questionText, $button, $questionType)
+    {
 
         var $removeOption = $('.remove-option')
         if (
