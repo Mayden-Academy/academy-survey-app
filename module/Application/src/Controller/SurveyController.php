@@ -86,7 +86,8 @@ class SurveyController extends AbstractActionController
                     !empty($question['question_order']) &&
                     !empty($question['question_text']) &&
                     !empty($question['question_type']) &&
-                    ($question['required'] != 1 || $question['required'] != 0) &&
+                    !empty($question['required']) &&
+                    ($question['required'] == 1 || $question['required'] == 0) &&
                     !empty($question['options']) &&
                     is_array($question['options']) &&
                     count($question['options']) > 0
