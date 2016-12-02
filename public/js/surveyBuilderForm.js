@@ -1,7 +1,7 @@
 $(function() {
-    var addQuestionButton = $('#add-question')
+    var $addQuestionButton = $('#add-question')
 
-    addQuestionButton.prop("disabled", true)
+    $addQuestionButton.prop("disabled", true)
 
     var $type = $('#input-selector')
 
@@ -21,89 +21,49 @@ $(function() {
         {
             $('#question-options').remove()     //@3
         }
-        validateNewQuestion($('#question').val(), addQuestionButton, $type.val())
+
+        validateNewQuestion($('#question').val(), $addQuestionButton, $('#input-selector').val())
     })
 
-    $('#question').keyup(function(e)
+    $('#question').keyup(function()
     {
-        validateNewQuestion($('#question').val(), addQuestionButton, $type.val())
+        validateNewQuestion($('#question').val(), $addQuestionButton, $type.val())
     })
 
-    addQuestionButton.click(function(e)
-    {
-        addQuestion($type)
-    })
-
-
-
-
-//_________________________________FUNCTION DEFINITIONS__________________________________________
-    //TODO: DocBlock me please :)
-    /**
-     *
-     * @param $type
-     */
-    function addQuestion($type)
+    //get new question information from form and adds question to question container div
+    $addQuestionButton.click(function()
     {
         var $questionContainer = $('#question-container')
         var $typeOptions = $('#question-options')
         var $question = $('#question')
+        var $type = $('#input-selector')
         var $required = $('#required')
 
         var question = $question.val()
         var type = $type.val().slice(0, $type.val().length - 6)
         var options = $typeOptions.find('.input-group input')
-        var response = '<div class="options">'
 
-        if ($required.is(':checked'))
-        {
+
+        if($required.is(':checked')){
             question += ' *'
         }
 
-        if (type == 'text')
-        {
-            response += '<input type="text" disabled >'
-        } else {
-            if (options.length)
-            {
-                options.each(function (key, option)
-                {
-                    response += '<div><input type="' + type + '" disabled value="' + option.value + '"> ' + option.value + '</div>'
-                })
-            }
-        }
+        var response = getNewQuestionResponse(type, options)
 
-        response += '</div>'
-
-        var newQuestion = '<div class="new-question ui-state-default">' +
-            '<h5>' + question + '</h5>' +
-            response +
-            '<input type="submit" class="remove-question btn btn-sm" value="Remove">' +
-            '</div>'
-
-        var $newQuestion = $(newQuestion).data('required', $required.is(':checked'))
-
-        $questionContainer.append($newQuestion)
-
-        $questionContainer.sortable(
-            {
-                placeholder: "ui-state-highlight"
-            }
-        )
-
-        $('.remove-question').click(function ()
-        {
-            $(this).parent('.new-question').remove()
-        })
+        addNewQuestion($questionContainer, question, response, $required)
 
         //resetting form
         $question.val('')
         $type.val('text-input')
         $required.prop('checked', false)
         $typeOptions.remove()
-        addQuestionButton.prop("disabled", true)
-    }
+        $addQuestionButton.prop("disabled",true)
+    })
 
+})
+
+
+//_________________________________FUNCTION DEFINITIONS__________________________________________
 
     /**
      * Adds the facility to add and remove options for multiple choice questions. Initially this consists of a text
@@ -180,6 +140,7 @@ $(function() {
         validateNewQuestion($('#question').val(), $('#add-question'), $('#input-selector').val())
     }
 
+
     /**
      * Validates input of new question form
      * Enables button if all inputs valid
@@ -209,4 +170,72 @@ $(function() {
         }
     }
 
-})
+/**
+ * returns a string of the response input options based on the question type
+ *
+ * @param type STRING type of response
+ * @param options ARRAY response options from the DOM
+ *
+ * @returns STRING html input(s) for question response
+ */
+function getNewQuestionResponse(type, options) {
+
+    var response = '<div class="options">'
+
+    if(type == 'text') {
+        response += '<input type="text" disabled >'
+    } else {
+        options.each(function(key, option)
+        {
+            if($(this).prop('id') != 'option-text'){
+                response += '<div><input type="' + type + '" disabled value="' + option.value + '"> ' + option.value + '</div>'
+            }
+        })
+    }
+
+    response += '</div>'
+
+    return response
+}
+
+/**
+ * creates question preview div using passed information and appends to container
+ *
+ * @param $container JQUERYSELECTOR container to append new question to
+ * @param question STRING question text
+ * @param response STRING html input(s) for question response
+ * @param $required JQUERYSELECTOR required checkbox
+ */
+function addNewQuestion($container, question, response, $required) {
+
+    var newQuestion =   '<div class="new-question ui-state-default">' +
+        '<h5>' + question + '</h5>' +
+        response +
+        '<input type="submit" class="remove-question btn btn-sm" value="Remove">' +
+        '</div>'
+
+    var $newQuestion = $(newQuestion).data('required', $required.is(':checked'))
+
+    $container.append($newQuestion)
+
+    $container.sortable(
+        {
+            placeholder: "ui-state-highlight"
+        }
+    )
+
+    createRemoveQuestionHandler()
+
+}
+
+/**
+ * adds listener to remove question button
+ */
+function createRemoveQuestionHandler() {
+
+    $('.remove-question').click(function()
+    {
+        $(this).parent('.new-question').remove()
+    })
+
+}
