@@ -15,4 +15,18 @@ class Module
     {
         return include __DIR__ . '/../config/module.config.php';
     }
+
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                '' =>  function($sm) {
+                    $tableGateway = $sm->get('AlbumTableGateway');
+                    $table = new AlbumTable($tableGateway);
+                    return $table;
+                },
+            ),
+        );
+    }
+
 }
