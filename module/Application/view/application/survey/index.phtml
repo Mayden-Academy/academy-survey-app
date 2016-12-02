@@ -15,19 +15,19 @@
                 $text .= ' *';
             }
 
-            echo    '<div class="question">' .
+            echo    '<div class="question ';
+
+            if($question['required'])
+            {
+                echo 'required';
+            }
+
+            echo    '">' .
                 '<h5>' . $text . '</h5>';
 
             if($question['type'] == 'text')
             {
-                echo '<input type="text" name="' . $question['id'] . '"';
-
-                if($question['required'])
-                {
-                    echo 'required';
-                }
-
-                echo '>';
+                echo '<input type="text" name="' . $question['id'] . '">';
             } else
             {
                 foreach ($question['options'] as $value)
@@ -35,14 +35,7 @@
                     echo    '<div>' . '<input ' .
                                 'type="'. $question['type'] . '"' .
                                 'value="' . $value['display_value'] . '"' .
-                                'name="' . $question['id'] . '"';
-
-                    if($question['required'])
-                    {
-                        echo ' required';
-                    }
-
-                    echo        '> ' .
+                                'name="' . $question['id'] . '"> ' .
                                 $value['display_value'] .
                             '</div>';
                 }
