@@ -50,7 +50,16 @@ div.container a.navbar-brand > img {
 
 .new-question,
 .ui-state-highlight {
-    margin-top: 20px;
+    padding: 10px;
+}
+
+.new-question:hover {
+    cursor: move;
+    background-color: #f4f4f4;
+}
+
+.options {
+    margin-bottom: 10px;
 }
 
 #page-options {
